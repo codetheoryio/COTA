@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  quiz_candidate_id: 
+  question: 
+  option_id: 
+  answer_body: MyText
+  remarks: MyText
+
+two:
+  quiz_candidate_id: 
+  question: 
+  option_id: 
+  answer_body: MyText
+  remarks: MyText

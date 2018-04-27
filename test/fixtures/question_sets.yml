@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  quiz_id: 
+  question_count: 1
+  taggable_id: 
+
+two:
+  quiz_id: 
+  question_count: 1
+  taggable_id: 

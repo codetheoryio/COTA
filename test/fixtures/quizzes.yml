@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  job_title: MyString
+  introduction: MyText
+  rules: MyText
+  time_limit: 1
+
+two:
+  name: MyString
+  job_title: MyString
+  introduction: MyText
+  rules: MyText
+  time_limit: 1
