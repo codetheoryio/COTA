@@ -45,3 +45,10 @@ group :development do
   gem 'spring'
 end
 
+gem 'devise'
+gem 'rolify'
+gem 'bootstrap',     '~> 4.0.0'
+gem 'material-sass', '~> 4.0.0'
+gem 'materialize-sass', '~> 1.0.0.alpha4'
+gem 'material_icons'
+
