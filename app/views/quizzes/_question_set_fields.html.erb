@@ -1,0 +1,14 @@
+<div class='nested-fields'>
+  <div class="row">
+    <div class="input-field col s4">
+      <%= f.input :question_count, label: 'No. of Questions'%>
+    </div>
+    <div class="input-field col s4">
+      <%#= qs.hint "Type a comma or press Enter to create a new tag." %>
+      <%= f.input :tag_list, label: 'Tags'%>
+    </div>
+    <div class="input-field col s4">
+      <%= link_to_remove_association '<i class="large material-icons">delete</i>'.html_safe, f, { :class => "btn-floating waves-effect waves-light red"} %>
+    </div>
+  </div>  
+</div>

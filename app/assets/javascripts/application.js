@@ -15,4 +15,5 @@
 //= require turbolinks
 //= require bootstrap
 //= require material
+//= require cocoon
 //= require_tree .
