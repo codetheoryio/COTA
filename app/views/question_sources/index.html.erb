@@ -1,0 +1,22 @@
+<h2>Import Questions</h2>
+
+<%= form_tag import_questions_path, multipart: true do %>
+    <%= file_field_tag :file %>
+    <%= submit_tag "Import" %>
+<% end %>
+<% unless @question_sources.count.zero? %>
+    <h2> All Uploaded Files </h2>
+    <table>
+      <tr>
+        <th>Uploaded File</th>
+        <th>Status</th>
+        <th>Failed questions file</th>
+      </tr>
+      <% @question_sources.each do |source| %>
+          <tr>
+            <td><%= "here comes input file link" %></td>
+            <td><%= "here comes result file link" %></td>
+          </tr>
+      <% end %>
+    </table>
+<% end %>
