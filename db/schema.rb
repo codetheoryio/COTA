@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180507124537) do
+ActiveRecord::Schema.define(version: 20180510070019) do
 
   create_table "answers", force: :cascade do |t|
     t.integer  "quiz_candidate_id", limit: 4
@@ -40,9 +40,9 @@ ActiveRecord::Schema.define(version: 20180507124537) do
   create_table "options", force: :cascade do |t|
     t.integer  "question_id", limit: 4
     t.text     "body",        limit: 65535
-    t.boolean  "is_correct"
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.boolean  "is_correct",                default: false
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
   end
 
   add_index "options", ["question_id"], name: "index_options_on_question_id", using: :btree
@@ -59,16 +59,22 @@ ActiveRecord::Schema.define(version: 20180507124537) do
   add_index "question_sets", ["quiz_id"], name: "index_question_sets_on_quiz_id", using: :btree
   add_index "question_sets", ["taggable_type", "taggable_id"], name: "index_question_sets_on_taggable_type_and_taggable_id", using: :btree
 
-  create_table "questions", force: :cascade do |t|
-    t.string   "title",         limit: 255
-    t.text     "body",          limit: 65535
-    t.integer  "taggable_id",   limit: 4
-    t.string   "taggable_type", limit: 255
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+  create_table "question_sources", force: :cascade do |t|
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
+    t.string   "question_sheet_file_name",    limit: 255
+    t.string   "question_sheet_content_type", limit: 255
+    t.integer  "question_sheet_file_size",    limit: 4
+    t.datetime "question_sheet_updated_at"
   end
 
-  add_index "questions", ["taggable_type", "taggable_id"], name: "index_questions_on_taggable_type_and_taggable_id", using: :btree
+  create_table "questions", force: :cascade do |t|
+    t.string   "uid",        limit: 255,   null: false
+    t.string   "title",      limit: 255,   null: false
+    t.text     "body",       limit: 65535
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
 
   create_table "quiz_candidates", force: :cascade do |t|
     t.integer  "quiz_id",      limit: 4

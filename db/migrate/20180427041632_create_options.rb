@@ -3,7 +3,7 @@ class CreateOptions < ActiveRecord::Migration
     create_table :options do |t|
       t.references :question, index: true, foreign_key: true
       t.text :body
-      t.boolean :is_correct
+      t.boolean :is_correct, default: false
 
       t.timestamps null: false
     end

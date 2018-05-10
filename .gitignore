@@ -11,3 +11,11 @@
 /log/*
 !/log/.keep
 /tmp
+
+.DS_Store
+.idea
+.notes
+paperclip
+public/assets
+public/system
+.byebug_history
