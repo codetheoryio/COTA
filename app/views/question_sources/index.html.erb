@@ -1,20 +1,30 @@
-<h2>Import Questions</h2>
-
-<%= form_tag import_questions_path, multipart: true do %>
-    <%= file_field_tag :file %>
-    <%= submit_tag "Import" %>
+<% content_for :header do %>
+    Import Questions
 <% end %>
+
+<%= form_for QuestionSource.new do |f| %>
+
+    <div class="form-group">
+      <%= f.label :question_sheet %>
+      <%= f.file_field :question_sheet, class: 'form-control'%>
+    </div>
+
+    <%= f.submit 'Upload', class: 'btn btn-primary' %>
+<% end %>
+
 <% unless @question_sources.count.zero? %>
-    <h2> All Uploaded Files </h2>
     <table>
       <tr>
         <th>Uploaded File</th>
+        <th>Uploaded at</th>
         <th>Status</th>
         <th>Failed questions file</th>
       </tr>
       <% @question_sources.each do |source| %>
           <tr>
-            <td><%= "here comes input file link" %></td>
+            <td><%= link_to source.question_sheet_file_name,  download_input_sheet_question_source_path(id: source.id), target: '_blank' %></td>
+            <td><%= source.created_at.strftime("%d-%b-%Y, %I:%M %p") %></td>
+            <td><%= "here comes status" %></td>
             <td><%= "here comes result file link" %></td>
           </tr>
       <% end %>

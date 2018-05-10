@@ -11,9 +11,15 @@ Rails.application.routes.draw do
   devise_for :users, :controllers => { registrations: 'registrations' }
 
   # You can have the root of your site routed with "root"
-  root 'home#index'
+  root 'quizzes#index'
 
   resources :quizzes
+
+  resources :question_sources do
+    member do
+      get 'download_input_sheet'
+    end
+  end
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

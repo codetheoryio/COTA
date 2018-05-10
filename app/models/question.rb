@@ -10,7 +10,7 @@ class Question < ActiveRecord::Base
   validates :title, :uid, presence: true
   validates_uniqueness_of :uid
 
-  def build(row)
+  def build_object(row)
     self.uid = row[0]
     self.title = row[1]
     self.body = "<pre>#{row[2]}</pre>"
@@ -22,15 +22,6 @@ class Question < ActiveRecord::Base
                               {body: "<pre>#{row[5]}</pre>"},
                               {body: "<pre>#{row[6]}</pre>"}
                           ])
-    end
-  end
-
-  def self.import(file)
-    questions_excel = Spreadsheet.open file.path
-    questions_sheet = questions_excel.worksheet 0
-    questions_sheet.each 1 do |row|
-      question = find_by_uid(row[0]) || new
-      question.build(row) if question.uid.nil?
     end
   end
 

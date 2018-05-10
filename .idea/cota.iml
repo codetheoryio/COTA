@@ -120,8 +120,11 @@
     </content>
     <orderEntry type="jdk" jdkName="RVM: ruby-2.4.4 [cota]" jdkType="RUBY_SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" scope="PROVIDED" name="bcrypt (v3.1.11, RVM: ruby-2.4.4 [cota]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="bootstrap (v4.0.0, RVM: ruby-2.4.4 [cota]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="climate_control (v0.2.0, RVM: ruby-2.4.4 [cota]) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="paperclip (v6.0.0, RVM: ruby-2.4.4 [cota]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="rolify (v5.2.0, RVM: ruby-2.4.4 [cota]) [gem]" level="application" />
   </component>
   <component name="RModuleSettingsStorage">
     <LOAD_PATH number="0" />
