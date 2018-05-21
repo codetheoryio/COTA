@@ -1,0 +1,27 @@
+<% content_for :header do %>
+    All Questions
+<% end %>
+<% unless @questions.count.zero? %>
+<table>
+  <tr>
+    <th>UID</th>
+    <th>Question</th>
+    <th>Tags</th>
+  </tr>
+  <% @questions.each do |question| %>
+  <tr>
+    <td><%= question.uid %></td>
+    <td><%= question.title %></td>
+    <td><%= "here comes tags" %></td>
+  </tr>
+  <% end %>
+</table>
+<% else %>
+<div class="well">
+  No questions in database.
+</div>
+<% end %>
+
+<div class="fixed-action-btn horizontal">
+  <%= link_to 'Upload Questions', question_sources_path, class: "btn waves-effect waves-light"%>
+</div>

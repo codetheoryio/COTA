@@ -7,6 +7,7 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
+      <% if user_signed_in? %>
       <li class="nav-item active">
         <a class="nav-link" href="#"> Home <span class="sr-only">(current)</span></a>
       </li>
@@ -16,6 +17,10 @@
       <li class="nav-item">
         <%= link_to('Quizzes', quizzes_path(), class: "nav-link") %>
       </li>
+      <li class="nav-item">
+        <%= link_to('Questions', questions_path(), class: "nav-link") %>
+      </li>
+      <% end %>
     </ul>
     <ul class="navbar-nav my-3 my-lg-0">
       <% if user_signed_in? %>

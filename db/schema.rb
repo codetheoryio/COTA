@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180509065657) do
+ActiveRecord::Schema.define(version: 20180521071347) do
 
   create_table "answers", force: :cascade do |t|
     t.integer  "quiz_candidate_id", limit: 4
@@ -37,12 +37,28 @@ ActiveRecord::Schema.define(version: 20180509065657) do
     t.datetime "updated_at",                                  null: false
   end
 
+  create_table "delayed_jobs", force: :cascade do |t|
+    t.integer  "priority",   limit: 4,     default: 0, null: false
+    t.integer  "attempts",   limit: 4,     default: 0, null: false
+    t.text     "handler",    limit: 65535,             null: false
+    t.text     "last_error", limit: 65535
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string   "locked_by",  limit: 255
+    t.string   "queue",      limit: 255
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
+
   create_table "options", force: :cascade do |t|
     t.integer  "question_id", limit: 4
     t.text     "body",        limit: 65535
-    t.boolean  "is_correct"
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.boolean  "is_correct",                default: false
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
   end
 
   add_index "options", ["question_id"], name: "index_options_on_question_id", using: :btree
@@ -56,8 +72,18 @@ ActiveRecord::Schema.define(version: 20180509065657) do
 
   add_index "question_sets", ["quiz_id"], name: "index_question_sets_on_quiz_id", using: :btree
 
+  create_table "question_sources", force: :cascade do |t|
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
+    t.string   "question_sheet_file_name",    limit: 255
+    t.string   "question_sheet_content_type", limit: 255
+    t.integer  "question_sheet_file_size",    limit: 4
+    t.datetime "question_sheet_updated_at"
+  end
+
   create_table "questions", force: :cascade do |t|
-    t.string   "title",      limit: 255
+    t.string   "uid",        limit: 255,   null: false
+    t.string   "title",      limit: 255,   null: false
     t.text     "body",       limit: 65535
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
