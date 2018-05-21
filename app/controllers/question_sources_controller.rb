@@ -6,10 +6,8 @@ class QuestionSourcesController < ApplicationController
 
   def create
     @question_source = QuestionSource.new(source_params)
-    QuestionSource.transaction do
-      @question_source.save!
-      @question_source.process
-    end
+    @question_source.save!
+    QuestionUploaderJob.perform_later(@question_source)
     flash[:success] = "Questions uploaded"
     redirect_to question_sources_path
   end

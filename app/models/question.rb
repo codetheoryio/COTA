@@ -13,15 +13,14 @@ class Question < ActiveRecord::Base
   def build_object(row)
     self.uid = row[0]
     self.title = row[1]
-    self.body = "<pre>#{row[2]}</pre>"
+    self.body = "<pre>#{row[2]}</pre>" if row[2].try(:strip).present?
     Question.transaction do
       self.save!
-      self.options.create([
-                              {body: "<pre>#{row[3]}</pre>", is_correct: true},
-                              {body: "<pre>#{row[4]}</pre>"},
-                              {body: "<pre>#{row[5]}</pre>"},
-                              {body: "<pre>#{row[6]}</pre>"}
-                          ])
+      options = []
+      (3..6).each { |num|
+        num == 3 ? options << {body: "<pre>#{row[num]}</pre>"} : options << {body: "<pre>#{row[num]}</pre>", is_correct: true} if row[num].try(:strip).present?
+      }
+      self.options.create(options)
     end
   end
 
