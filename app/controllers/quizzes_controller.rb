@@ -3,10 +3,12 @@ class QuizzesController < ApplicationController
 
   def new
     @quiz = Quiz.new
+    @quiz.question_sets.build
   end
 
   def edit
     @quiz = Quiz.find(params[:id])
+    @quiz.question_sets.build
   end
 
   def index
@@ -48,6 +50,6 @@ class QuizzesController < ApplicationController
   private
   # Never trust parameters from the scary internet, only allow the white list through.
   def quiz_params
-    params.require(:quiz).permit(:name, :job_title, :time_limit, :introduction, :rules)
+    params.require(:quiz).permit(:name, :job_title, :time_limit, :introduction, :rules, :question_sets_attributes => [:id, :question_count, :tag_list, :_destroy])
   end
 end

@@ -1,11 +1,8 @@
 class Question < ActiveRecord::Base
   has_many :answers
   has_many :options
-  has_many :tags, through: :tagging
-  has_many :taggings, as: :taggable
 
   accepts_nested_attributes_for :options
-  accepts_nested_attributes_for :taggings
 
   validates :title, :uid, presence: true
   validates_uniqueness_of :uid

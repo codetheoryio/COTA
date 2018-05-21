@@ -66,14 +66,11 @@ ActiveRecord::Schema.define(version: 20180521071347) do
   create_table "question_sets", force: :cascade do |t|
     t.integer  "quiz_id",        limit: 4
     t.integer  "question_count", limit: 4
-    t.integer  "taggable_id",    limit: 4
-    t.string   "taggable_type",  limit: 255
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
   end
 
   add_index "question_sets", ["quiz_id"], name: "index_question_sets_on_quiz_id", using: :btree
-  add_index "question_sets", ["taggable_type", "taggable_id"], name: "index_question_sets_on_taggable_type_and_taggable_id", using: :btree
 
   create_table "question_sources", force: :cascade do |t|
     t.datetime "created_at",                              null: false
@@ -129,18 +126,28 @@ ActiveRecord::Schema.define(version: 20180521071347) do
     t.integer  "tag_id",        limit: 4
     t.integer  "taggable_id",   limit: 4
     t.string   "taggable_type", limit: 255
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.integer  "tagger_id",     limit: 4
+    t.string   "tagger_type",   limit: 255
+    t.string   "context",       limit: 128
+    t.datetime "created_at"
   end
 
+  add_index "taggings", ["context"], name: "index_taggings_on_context", using: :btree
+  add_index "taggings", ["tag_id", "taggable_id", "taggable_type", "context", "tagger_id", "tagger_type"], name: "taggings_idx", unique: true, using: :btree
   add_index "taggings", ["tag_id"], name: "index_taggings_on_tag_id", using: :btree
-  add_index "taggings", ["taggable_type", "taggable_id"], name: "index_taggings_on_taggable_type_and_taggable_id", using: :btree
+  add_index "taggings", ["taggable_id", "taggable_type", "context"], name: "index_taggings_on_taggable_id_and_taggable_type_and_context", using: :btree
+  add_index "taggings", ["taggable_id", "taggable_type", "tagger_id", "context"], name: "taggings_idy", using: :btree
+  add_index "taggings", ["taggable_id"], name: "index_taggings_on_taggable_id", using: :btree
+  add_index "taggings", ["taggable_type"], name: "index_taggings_on_taggable_type", using: :btree
+  add_index "taggings", ["tagger_id", "tagger_type"], name: "index_taggings_on_tagger_id_and_tagger_type", using: :btree
+  add_index "taggings", ["tagger_id"], name: "index_taggings_on_tagger_id", using: :btree
 
   create_table "tags", force: :cascade do |t|
-    t.string   "name",       limit: 255
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.string  "name",           limit: 255
+    t.integer "taggings_count", limit: 4,   default: 0
   end
+
+  add_index "tags", ["name"], name: "index_tags_on_name", unique: true, using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "first_name",             limit: 255, default: "", null: false
@@ -175,5 +182,4 @@ ActiveRecord::Schema.define(version: 20180521071347) do
   add_foreign_key "question_sets", "quizzes"
   add_foreign_key "quiz_candidates", "candidates"
   add_foreign_key "quiz_candidates", "quizzes"
-  add_foreign_key "taggings", "tags"
 end

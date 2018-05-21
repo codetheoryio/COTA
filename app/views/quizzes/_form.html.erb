@@ -26,53 +26,23 @@
           </div>
         </div>
       </li>
-
+      
       <li>
         <div class="collapsible-header"><i class="large material-icons blue-grey-ic">list</i> Questions Set</div>
-        <table class="collapsible-body table">
-          <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">No. of Questions</th>
-            <th scope="col">Tags</th>
-            <th scope="col">Actions</th>
-          </tr>
-          </thead>
-          <tfoot>
-          <tr>
-            <td></td>
-            <td><b>Total Questions: </b></td>
-            <td></td>
-            <td>
-              <a class="btn-floating waves-effect waves-light green"><i class="large material-icons">add</i></a>
-            </td>
-          </tr>
-          </tfoot>
-          <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>
-              <div class="input-field">
-                <input id="number_of_questions" type="text" class="validate">
-                <label for="number_of_questions">No. of Questions</label>
-              </div>
-            </td>
-            <td>
-              <div class="input-field">
-                <input id="tags" type="text" class="validate">
-                <label for="tags">Add Tags here</label>
-              </div>
-            </td>
-            <td>
-              <a class="btn-floating waves-effect waves-light red"><i class="large material-icons">delete</i></a>
-            </td>
-          </tr>
-          </tbody>
-        </table>
-      </li
+        <div class="collapsible-body" id='question_sets'>
+          <%= f.simple_fields_for :question_sets do |qs| %>
+            <%= render 'question_set_fields', :f => qs %>
+          <% end %>
+          
+          <div class="row">
+            <%= link_to_add_association '<i class="large material-icons">add</i>'.html_safe, f, :question_sets,  :class => "btn-floating waves-effect waves-light green" %>
+          </div>
+        </div>
+      </li>
     </ul>
-      <div class="fixed-action-btn horizontal">
-        <%= f.button :submit, :value => 'Save', :class=>'btn btn-success'%>
-      </div>
+
+    <div class="fixed-action-btn horizontal">
+      <%= f.button :submit, :value => 'Save', :class=>'btn btn-success'%>
+    </div>
 <% end %>
 </div>

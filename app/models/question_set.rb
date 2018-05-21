@@ -1,5 +1,8 @@
 class QuestionSet < ActiveRecord::Base
+  acts_as_taggable
+
+  # Validations
+  validates :question_count, :tag_list, presence: true
+
   belongs_to :quiz
-  has_many :tags, through: :tagging
-  has_many :taggings, as: :taggable
 end
