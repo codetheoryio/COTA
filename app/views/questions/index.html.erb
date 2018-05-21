@@ -2,22 +2,54 @@
     All Questions
 <% end %>
 <% unless @questions.count.zero? %>
-<table>
+<table class="table striped">
   <tr>
-    <th>UID</th>
-    <th>Question</th>
-    <th>Tags</th>
+    <th><h6>UID</h6></th>
+    <th><h6>Question</h6></th>
+    <th><h6>Tags</h6></th>
   </tr>
   <% @questions.each do |question| %>
   <tr>
     <td><%= question.uid %></td>
-    <td><%= question.title %></td>
-    <td><%= "here comes tags" %></td>
+    <td>
+      <p class="lead">
+        <%= question.title %>
+      </p>
+      <% if(question.body.present?) %>
+      <div class="row">
+        <div class="col m6">
+          <div class="card-panel">
+            <%= question.body.try(:html_safe) %>
+          </div>
+        </div>
+      </div>
+      <% end %>
+
+      <div class="well">
+
+      </div>
+      <% if question.options.any? %>
+      <ul class="collection">
+      <% question.options.each { |opt| %>
+        <li class="collection-item">
+          <% if opt.is_correct %>
+              <span class="new badge green" data-badge-caption="">Correct</span>
+          <% end %>
+          <%=opt.body.try(:html_safe)%>
+        </li>
+      <% } %>
+      </ul>
+      <% end %>
+
+    </td>
+    <td>
+      <p class="left"><%= display_tags(question.tags) %></p>
+    </td>
   </tr>
   <% end %>
 </table>
 <% else %>
-<div class="well">
+<div class="lead">
   No questions in database.
 </div>
 <% end %>
