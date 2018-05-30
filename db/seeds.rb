@@ -5,3 +5,7 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+#Create Admin User
+admin = User.create!({first_name: "admin", email: "sreekanth@clearstack.io", :password => "cotarocks", :password_confirmation => "cotarocks" })
+admin.add_role(:admin)

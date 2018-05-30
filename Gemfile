@@ -55,4 +55,8 @@ gem 'bootstrap',     '~> 4.0.0'
 gem 'material-sass', '~> 4.0.0'
 gem 'materialize-sass', '~> 1.0.0.alpha4'
 gem 'material_icons'
+gem 'spreadsheet'
+gem 'paperclip'
 
+gem 'delayed_job'
+gem 'delayed_job_active_record'
