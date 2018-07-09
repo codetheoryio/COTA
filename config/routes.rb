@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   resources :question_sources do
     member do
       get 'download_input_sheet'
+      get 'download_result_sheet'
     end
   end
 

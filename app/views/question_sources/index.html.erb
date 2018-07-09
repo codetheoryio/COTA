@@ -24,8 +24,8 @@
           <tr>
             <td><%= link_to source.question_sheet_file_name,  download_input_sheet_question_source_path(id: source.id), target: '_blank' %></td>
             <td><%= source.created_at.strftime("%d-%b-%Y, %I:%M %p") %></td>
-            <td><%= "here comes status" %></td>
-            <td><%= "here comes result file link" %></td>
+            <td class="left"><%= display_status source.status %></td>
+            <td><%= link_to source.result_sheet_file_name,  download_result_sheet_question_source_path(id: source.id), target: '_blank' if source.result_sheet.present? %></td>
           </tr>
       <% end %>
     </table>

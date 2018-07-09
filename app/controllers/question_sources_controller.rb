@@ -18,6 +18,12 @@ class QuestionSourcesController < ApplicationController
     )
   end
 
+  def download_result_sheet
+    send_file(
+        Rails.root.join(self.result_sheet.path)
+    )
+  end
+
   private
 
   def source_params

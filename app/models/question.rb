@@ -23,6 +23,18 @@ class Question < ActiveRecord::Base
       }
       self.options.create(options)
     end
+  rescue Exception
+    self.errors.messages
+  end
+
+  class<<self
+    def get_random(tags, count)
+      q = includes(:tags)
+      tags.each do |tag|
+        q = q.where(tags: {name: tag})
+      end
+      q.sample(count)
+    end
   end
 
 end
