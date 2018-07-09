@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
 
+  get 'candidates/invite'
+  post 'candidates/send_invite'
+
   resources :questions do
     collection do
       post 'import'

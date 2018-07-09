@@ -40,5 +40,17 @@ Rails.application.configure do
   # config.action_view.raise_on_missing_translations = true
 
   # Devise
+  config.action_mailer.perform_deliveries = false # Set it to false to disable the email in dev mode
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.delivery_method = :smtp
   config.action_mailer.default_url_options = { host: 'localhost', port: 5000 }
+
+
+  ActionMailer::Base.smtp_settings = {
+      :address        => "smtp.gmail.com",
+      :port           => 587,
+      :authentication => :plain,
+      :user_name      => "clearstackcota@gmail.com",
+      :password       => "Clearstack12"
+  }
 end
