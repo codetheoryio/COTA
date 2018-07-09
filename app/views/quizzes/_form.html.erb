@@ -1,6 +1,7 @@
 <div class="row">
 <%= simple_form_for(@quiz, html: {class: 'col s12', multipart: true}) do |f| %>
-
+    <%= f.error_notification %>
+    
     <ul class="collapsible popout" data-collapsible="accordion">
       <li>
         <div class="collapsible-header"><i class="large material-icons blue-grey-ic">info</i> Quiz Info</div>

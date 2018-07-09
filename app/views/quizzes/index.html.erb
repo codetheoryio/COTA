@@ -14,8 +14,8 @@
             <p><%= "Time: #{quiz.time_limit}" %></p>
           </div>
           <div class="card-action">
-            <a href="#">Invite Candidates</a>
-            <%= link_to 'Manage Quiz', edit_quiz_path(quiz) %>
+            <%= link_to 'Invite Candidates', '#', :class => 'invite_new_candidates', :data => {:toggle => "modal", :target => "#invite_candidates-form-container"} %>
+            <%= link_to 'Manage Quiz', edit_quiz_path(quiz), :data => {:turbolinks => "false"} %>
           </div>
         </div>
       </div>
@@ -23,10 +23,48 @@
   </div>
 <% end %>
 
-
-  
+  <div><%= render 'invite'%></div>
   
   <div class="fixed-action-btn horizontal">
-    <%= link_to 'Create New Quiz', new_quiz_path, class: "btn waves-effect waves-light"%>
+    <%= link_to 'Create New Quiz', new_quiz_path, class: "btn waves-effect waves-light", :data => {:turbolinks => "false"}%>
   </div>
 </div>
+
+<script type="text/javascript">
+//  $( document ).on('ready page:load', function() {
+//    console.log("On");
+////    $('#invite_candidates-form-container').modal();
+//  });
+//
+//  document.addEventListener("turbolinks:load", function() {
+//    console.log("addEventListener");
+//    $('#invite_candidates-form-container').modal();
+//  });
+
+//  function <%#="invite_new_candidates"%>(path, dom, width, title) {
+//    console.log("hi")
+//
+//    // Reset the current person data
+//    // dom.data('person-id', '');
+//    // dom.data('person-name', '');
+//
+//    // Open Add New Person Dialog
+//    $.ajax({
+//      type:'GET',
+//      async:false,
+//      url:path,
+//      dataType:"html",
+//      success:function (resp) {
+//        dom.html(resp);
+//        $(".modal-trigger")[0].click();
+//      }
+//    });
+//    return false;
+//  }
+
+//  $(".invite_new_candidates").click(function () {
+    <%#="invite_new_candidates"%>//("<%#= candidates_invite_path(:format => :modal)%>", $("#invite_candidates-form-container"), 755, "Invite New Candidates");
+//    return false;
+//  })
+
+</script>
