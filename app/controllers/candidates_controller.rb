@@ -19,7 +19,7 @@ class CandidatesController < ApplicationController
         if @candidate.save
           # Send candidate invitation
           CandidateNotifier.send_candidate_invitation(@candidate, @quiz).deliver_now
-
+          @candidate.prepare_quiz(candidate_params[:quiz_id])
           format.html { redirect_to quizzes_url, notice: 'Candidate invitation was successfully Sent.' }
         else
           format.html { redirect_to quizzes_url, notice: 'Candidate invitation was not Sent.' }

@@ -19,11 +19,12 @@
           </div>
         </div>
       </div>
+        <div id="invite_candidates-form-container" class="modal modal-fixed-footer">
+          <%= render 'invite', quiz: quiz %>
+        </div>
     <% end %>
   </div>
 <% end %>
-
-  <div><%= render 'invite'%></div>
   
   <div class="fixed-action-btn horizontal">
     <%= link_to 'Create New Quiz', new_quiz_path, class: "btn waves-effect waves-light", :data => {:turbolinks => "false"}%>

@@ -5,6 +5,7 @@ class Quiz < ActiveRecord::Base
   has_many :quiz_candidates
   has_many :question_sets, inverse_of: :quiz
   has_many :answers, through: :quiz_candidate
+  has_many :candidates, through: :quiz_candidate
 
   accepts_nested_attributes_for :question_sets, reject_if: :all_blank, allow_destroy: true
 end

@@ -1,5 +1,4 @@
-<div id="invite_candidates-form-container" class="modal modal-fixed-footer">
-  <%= simple_form_for :candidate, url: candidates_send_invite_path do |f| %>
+  <%= simple_form_for :candidate, url: quiz_quiz_candidates_path(quiz.id) do |f| %>
     <div class="modal-content">
       <div class="modal-header card-panel teal lighten-2">
         <h4 class="">Invite New Candidates</h4>
@@ -14,9 +13,6 @@
         <div class="input-field col s6">
           <%= f.input :email, as: :string %>
         </div>
-        <div class="input-field col s6">
-          <%= f.input :quiz_id, :as => :hidden, :input_html => { :value => "some value" } %>
-        </div>
       </div>
 
     </div>
@@ -25,4 +21,3 @@
       <%= f.button :submit, :value => 'Send Invites', :class=>'modal-close waves-effect waves-green teal btn'%>
     </div>
   <% end %>
-</div>

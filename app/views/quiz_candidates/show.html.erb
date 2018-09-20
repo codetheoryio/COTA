@@ -1,0 +1,64 @@
+<% content_for :header do %>
+    <%= @quiz_candidate.candidate.name %>'s Answers
+<% end %>
+
+<% unless @quiz_candidate.answers.count.zero? %>
+
+    <table class="table striped">
+      <tr>
+        <th><h6>S.No.</h6></th>
+        <th><h6>Question</h6></th>
+        <th><h6>Remarks</h6></th>
+      </tr>
+      <% @quiz_candidate.answers.preload(:question, :option).each_with_index do |answer, index|
+          question = answer.question
+          marked_option = answer.option
+      %>
+          <tr>
+            <td><%= index+1 %></td>
+            <td>
+              <p class="lead">
+                <%= question.title %>
+              </p>
+              <% if(question.body.present?) %>
+                  <div class="row">
+                    <div class="col m6">
+                      <div class="card-panel">
+                        <%= question.body.try(:html_safe) %>
+                      </div>
+                    </div>
+                  </div>
+              <% end %>
+              <% if question.options.any? %>
+                  <ul class="collection">
+                    <% question.options.each { |opt| %>
+                        <li class="collection-item">
+                          <% if opt.is_correct %>
+                              <span class="new badge green" data-badge-caption="">Correct Answer</span>
+                          <% end %>
+                          <% if(marked_option.present? && opt.id == marked_option.id) %>
+                              <span class="new badge blue" data-badge-caption="">Candidate Marked</span>
+                          <% end %>
+                          <%=opt.body.try(:html_safe)%>
+                        </li>
+                    <% } %>
+                  </ul>
+              <% end %>
+
+            </td>
+            <td>
+              <p class="left">
+                <textarea></textarea>
+              </p>
+            </td>
+          </tr>
+      <% end %>
+    </table>
+
+
+
+<% else %>
+    <div class="lead">
+      <%= @quiz_candidate.candidate.name %>'s Quiz is yet to be prepared.
+    </div>
+<% end %>

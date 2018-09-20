@@ -23,12 +23,12 @@ class QuestionSource < ActiveRecord::Base
       question = Question.find_by_uid(row[0]) || Question.new
       next if question.uid.present?
       errors = question.build_object(row)
-      if errors.any?
-        row[8] = errors.map { |attr, msgs|
-          msgs.map {|msg| "#{attr} #{msg}"}.join(', ')
-        }.join(', ')
-        failed_rows << row
-      end
+      # if errors.any?
+      #   row[8] = errors.map { |attr, msgs|
+      #     msgs.map {|msg| "#{attr} #{msg}"}.join(', ')
+      #   }.join(', ')
+      #   failed_rows << row
+      # end
     end
     # generate_result_sheet(failed_rows) if failed_rows.any?
   end

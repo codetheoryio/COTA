@@ -1,0 +1,36 @@
+<% content_for :header do %>
+    All Candidates Status
+<% end %>
+<% unless @quiz_candidates.count.zero? %>
+    <table class="table striped">
+      <tr>
+        <th><h6>Name</h6></th>
+        <th><h6>Status</h6></th>
+        <th><h6>Remarks</h6></th>
+        <th><h6>Invited At</h6></th>
+        <th></th>
+      </tr>
+      <% @quiz_candidates.each do |qc| %>
+      <tr>
+        <td>
+          <%= qc.candidate.name %> <br/>
+          <small><span class="text-muted"><%= qc.candidate.email %></span></small><br/>
+        </td>
+        <td>
+          <%= qc.status %>
+        </td>
+        <td>
+          <%= qc.remarks %>
+        </td>
+        <td>
+          <%= qc.created_at.strftime("%d-%m-%Y") %>
+        </td>
+        <td><%= link_to('Review', quiz_quiz_candidate_path(qc.quiz_id, qc.id)) %></td>
+      </tr>
+      <% end %>
+    </table>
+<% else %>
+    <div class="lead">
+      No candidates invited yet.
+    </div>
+<% end %>
