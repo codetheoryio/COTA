@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
 
-  get 'candidates/invite'
-  post 'candidates/send_invite'
+  # get 'candidates/invite'
+  # post 'candidates/send_invite'
 
   resources :questions do
     collection do
@@ -16,7 +16,9 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   root 'quizzes#index'
 
-  resources :quizzes
+  resources :quizzes do
+    resources :quiz_candidates, :only => [:index, :show, :create]
+  end
 
   resources :question_sources do
     member do
@@ -24,6 +26,8 @@ Rails.application.routes.draw do
       get 'download_result_sheet'
     end
   end
+
+  resources :candidates
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

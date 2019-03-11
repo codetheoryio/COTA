@@ -4,6 +4,6 @@ class QuizCandidate < ActiveRecord::Base
   belongs_to :candidate
 
   def prepare_quiz
-
+    QuizCreatorJob.perform_later(self)
   end
 end

@@ -6,6 +6,9 @@ class CandidatesController < ApplicationController
   #     format.modal
   #   end
   # end
+  def index
+    @candidates = Candidate.order("created_at DESC")
+  end
 
   def send_invite
     @candidate = Candidate.where(email: candidate_params[:email]).last
@@ -19,7 +22,7 @@ class CandidatesController < ApplicationController
         if @candidate.save
           # Send candidate invitation
           CandidateNotifier.send_candidate_invitation(@candidate, @quiz).deliver_now
-
+          @candidate.prepare_quiz(candidate_params[:quiz_id])
           format.html { redirect_to quizzes_url, notice: 'Candidate invitation was successfully Sent.' }
         else
           format.html { redirect_to quizzes_url, notice: 'Candidate invitation was not Sent.' }

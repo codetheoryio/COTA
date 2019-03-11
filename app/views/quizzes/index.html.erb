@@ -15,15 +15,17 @@
           </div>
           <div class="card-action">
             <%= link_to 'Invite Candidates', '#', :class => 'invite_new_candidates', :data => {:toggle => "modal", :target => "#invite_candidates-form-container"} %>
+            <%= link_to 'Quiz Candidates', quiz_quiz_candidates_path(quiz), :data => {:turbolinks => "false"} %>
             <%= link_to 'Manage Quiz', edit_quiz_path(quiz), :data => {:turbolinks => "false"} %>
           </div>
         </div>
       </div>
+        <div id="invite_candidates-form-container" class="modal modal-fixed-footer">
+          <%= render 'invite', quiz: quiz %>
+        </div>
     <% end %>
   </div>
 <% end %>
-
-  <div><%= render 'invite'%></div>
   
   <div class="fixed-action-btn horizontal">
     <%= link_to 'Create New Quiz', new_quiz_path, class: "btn waves-effect waves-light", :data => {:turbolinks => "false"}%>

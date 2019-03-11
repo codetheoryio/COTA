@@ -46,6 +46,7 @@ group :development do
   gem 'spring'
 end
 
+gem 'awesome_print'
 gem 'devise'
 gem 'rolify'
 gem 'simple_form'
@@ -57,6 +58,8 @@ gem 'materialize-sass', '~> 1.0.0.alpha4'
 gem 'material_icons'
 gem 'spreadsheet'
 gem 'paperclip'
+gem 'aasm'
 
 gem 'delayed_job'
 gem 'delayed_job_active_record'
+gem 'daemons'
