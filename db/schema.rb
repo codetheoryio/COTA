@@ -73,9 +73,9 @@ ActiveRecord::Schema.define(version: 20180521071347) do
   add_index "question_sets", ["quiz_id"], name: "index_question_sets_on_quiz_id", using: :btree
 
   create_table "question_sources", force: :cascade do |t|
-    t.string   "status",                      limit: 255, default: "received", null: false
-    t.datetime "created_at",                                                   null: false
-    t.datetime "updated_at",                                                   null: false
+    t.string   "status",                      limit: 255
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
     t.string   "question_sheet_file_name",    limit: 255
     t.string   "question_sheet_content_type", limit: 255
     t.integer  "question_sheet_file_size",    limit: 4

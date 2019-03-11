@@ -4,11 +4,11 @@ module QuestionSourcesHelper
     case status
       when "received"
         "<span class='badge new' data-badge-caption=''>#{status.upcase}</span>".html_safe
-      when :processing
+      when 'processing'
         "<span class='badge new blue' data-badge-caption=''>#{status.upcase}</span>".html_safe
-      when :processed
+      when 'processed'
         "<span class='badge new green' data-badge-caption=''>#{status.upcase}</span>".html_safe
-      when :failed
+      when 'failed'
         "<span class='badge new red' data-badge-caption=''>#{status.upcase}</span>".html_safe
     end
   end

@@ -1,22 +1,42 @@
 class QuestionSource < ActiveRecord::Base
+  include AASM
 
-  has_attached_file :question_sheet
+  aasm column: 'status', :whiny_transitions => false do
+    state :received, :initial => true
+    state :processing
+    state :failed
+    state :processed
+
+    event :set_processing do
+      transitions :from => :received, :to => :processing
+    end
+
+    event :set_failed do
+      transitions :from => [:received, :processing], :to => :failed
+    end
+
+    event :set_processed do
+      transitions :from => [:received, :processing], :to => :processed
+    end
+  end
+
+  has_attached_file :question_sheet, :path => ":rails_root/public/system/:attachment/:id/:filename"
   has_attached_file :result_sheet
 
   validates_attachment :question_sheet, presence: true,
-                       content_type: { content_type: %w(
-                           application/vnd.ms-excel,
-                           application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,
-                           application/x-ole-storage
-                       )
-                       },
+                       # content_type: { content_type: %w(
+                       #     application/vnd.ms-excel,
+                       #     application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,
+                       #     application/x-ole-storage
+                       # )
+                       # },
                        message: ' Only EXCEL files are allowed.'
 
   do_not_validate_attachment_file_type :result_sheet
 
 
   def process
-    questions_excel = Spreadsheet.open (Rails.root.join(self.question_sheet.path))
+    questions_excel = Spreadsheet.open(self.question_sheet.path, 'r')
     questions_sheet = questions_excel.worksheet 0
     failed_rows = []
     questions_sheet.each 1 do |row|

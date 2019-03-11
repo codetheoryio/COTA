@@ -1,0 +1,35 @@
+<% content_for :header do %>
+    All Candidates
+<% end %>
+
+<% unless @candidates.count.zero? %>
+    <table class="table striped">
+      <tr>
+        <th><h6>Name</h6></th>
+        <th><h6>Email</h6></th>
+        <th><h6>Applied Position</h6></th>
+        <th><h6>Status</h6></th>
+      </tr>
+      <% @candidates.each do |candidate| %>
+          <tr>
+            <td><%= candidate.name %></td>
+            <td>
+              <p class="lead">
+                <%= candidate.email %>
+              </p>
+            </td>
+            <td>
+              <p class="left"><%= candidate.applied_position %></p>
+            </td>
+            <td>
+              <p class="left"><%= candidate.status %></p>
+            </td>
+          </tr>
+      <% end %>
+    </table>
+<% else %>
+    <div class="lead">
+      No candidates in database.
+    </div>
+<% end %>
+</div>

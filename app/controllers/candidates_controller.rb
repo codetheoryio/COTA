@@ -6,6 +6,9 @@ class CandidatesController < ApplicationController
   #     format.modal
   #   end
   # end
+  def index
+    @candidates = Candidate.order("created_at DESC")
+  end
 
   def send_invite
     @candidate = Candidate.where(email: candidate_params[:email]).last
