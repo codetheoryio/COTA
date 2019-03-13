@@ -11,20 +11,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180521071347) do
+ActiveRecord::Schema.define(version: 20190312053317) do
 
   create_table "answers", force: :cascade do |t|
-    t.integer  "quiz_candidate_id", limit: 4
-    t.integer  "question_id",       limit: 4
-    t.integer  "option_id",         limit: 4
-    t.text     "answer_body",       limit: 65535
-    t.text     "remarks",           limit: 65535
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
+    t.integer  "candidate_question_id", limit: 4
+    t.integer  "option_id",             limit: 4
+    t.text     "answer_body",           limit: 65535
+    t.text     "remarks",               limit: 65535
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
   end
 
+  add_index "answers", ["candidate_question_id"], name: "index_answers_on_candidate_question_id", using: :btree
   add_index "answers", ["option_id"], name: "index_answers_on_option_id", using: :btree
-  add_index "answers", ["quiz_candidate_id"], name: "index_answers_on_quiz_candidate_id", using: :btree
+
+  create_table "candidate_questions", force: :cascade do |t|
+    t.integer  "quiz_candidate_id", limit: 4
+    t.integer  "question_id",       limit: 4
+    t.boolean  "answered"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+  end
+
+  add_index "candidate_questions", ["question_id"], name: "index_candidate_questions_on_question_id", using: :btree
+  add_index "candidate_questions", ["quiz_candidate_id"], name: "index_candidate_questions_on_quiz_candidate_id", using: :btree
 
   create_table "candidates", force: :cascade do |t|
     t.string   "name",             limit: 255
@@ -95,12 +105,17 @@ ActiveRecord::Schema.define(version: 20180521071347) do
   end
 
   create_table "quiz_candidates", force: :cascade do |t|
-    t.integer  "quiz_id",      limit: 4
-    t.integer  "candidate_id", limit: 4
-    t.string   "status",       limit: 255
-    t.text     "remarks",      limit: 65535
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.integer  "quiz_id",                 limit: 4
+    t.integer  "candidate_id",            limit: 4
+    t.string   "status",                  limit: 255
+    t.datetime "assessment_started_at"
+    t.datetime "assessment_ends_at"
+    t.string   "secure_assessment_token", limit: 255
+    t.datetime "secure_token_expire_at"
+    t.string   "secure_assessment_url",   limit: 255
+    t.text     "remarks",                 limit: 65535
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
   end
 
   add_index "quiz_candidates", ["candidate_id"], name: "index_quiz_candidates_on_candidate_id", using: :btree
@@ -181,8 +196,10 @@ ActiveRecord::Schema.define(version: 20180521071347) do
 
   add_index "users_roles", ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id", using: :btree
 
+  add_foreign_key "answers", "candidate_questions"
   add_foreign_key "answers", "options"
-  add_foreign_key "answers", "quiz_candidates"
+  add_foreign_key "candidate_questions", "questions"
+  add_foreign_key "candidate_questions", "quiz_candidates"
   add_foreign_key "options", "questions"
   add_foreign_key "question_sets", "quizzes"
   add_foreign_key "quiz_candidates", "candidates"

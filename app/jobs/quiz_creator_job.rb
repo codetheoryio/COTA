@@ -7,9 +7,9 @@ class QuizCreatorJob < ActiveJob::Base
       _questions = Question.tagged_with(set.tags)
       questions = _questions.sample(set.question_count)
       questions.each do |question|
-        _answer = question.answers.new
-        _answer.quiz_candidate = quiz_candidate
-        _answer.save!
+        _candidate_question = question.candidate_questions.new
+        _candidate_question.quiz_candidate = quiz_candidate
+        _candidate_question.save!
       end
     end
   end

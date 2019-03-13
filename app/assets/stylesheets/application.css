@@ -1,3 +1,13 @@
+/*
+*= require jquery.countdown.css
+*/
 @import "material";
 @import "https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css";
 @import "https://fonts.googleapis.com/icon?family=Material+Icons";
+
+body {
+    -webkit-user-select: none;
+    -moz-user-select: -moz-none;
+    -ms-user-select: none;
+    user-select: none;
+}

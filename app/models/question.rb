@@ -2,8 +2,8 @@ class Question < ActiveRecord::Base
 
   acts_as_taggable
 
-  has_many :answers
   has_many :options
+  has_many :candidate_questions
 
   accepts_nested_attributes_for :options
 

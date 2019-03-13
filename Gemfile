@@ -47,6 +47,7 @@ group :development do
 end
 
 gem 'awesome_print'
+gem 'kaminari'
 gem 'devise'
 gem 'rolify'
 gem 'simple_form'
