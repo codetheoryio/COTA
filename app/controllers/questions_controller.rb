@@ -1,4 +1,5 @@
 class QuestionsController < ApplicationController
+  load_and_authorize_resource
 
   def index
     @questions = Question.preload(:tags, :options).all

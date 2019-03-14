@@ -1,11 +1,6 @@
 class CandidatesController < ApplicationController
-  # def invite
-  #
-  # 	respond_to do |format|
-  #     format.html
-  #     format.modal
-  #   end
-  # end
+  load_and_authorize_resource
+
   def index
     @candidates = Candidate.order("created_at DESC")
   end

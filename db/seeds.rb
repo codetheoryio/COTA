@@ -7,5 +7,8 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 #Create Admin User
-admin = User.create!({first_name: "admin", email: "sreekanth@clearstack.io", :password => "cotarocks", :password_confirmation => "cotarocks" })
-admin.add_role(:admin)
+admin1 = User.create!({first_name: "admin", email: "sreekanth@clearstack.io", :password => "cotarocks", :password_confirmation => "cotarocks" })
+admin1.add_role(:admin)
+
+admin2 = User.create!({first_name: "Bala", email: "bala@clearstack.io", :password => "cotarocks12", :password_confirmation => "cotarocks12" })
+admin2.add_role(:admin)

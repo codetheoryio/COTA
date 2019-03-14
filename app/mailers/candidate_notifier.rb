@@ -1,16 +1,18 @@
 class CandidateNotifier < BaseNotifier
 
-  def send_candidate_invitation(candidate, quiz)
-    email(candidate, quiz)
+  def send_candidate_invitation(candidate, generated_password, quiz_candidate)
+    email(candidate, generated_password, quiz_candidate)
   end
 
-  def email(candidate, quiz)
+  def email(candidate, generated_password, quiz_candidate)
+    return if generated_password.blank?
     @notifier_candidate = candidate
-    @quiz = quiz
+    @quiz_candidate = quiz_candidate
+    @password = generated_password
     subject = "ClearStack | Interview Next Steps | #{@notifier_candidate.name.titleize} | #{@notifier_candidate.applied_position}"
     mail(to: candidate.email,
          # cc: test_cc,
-         # bcc: test_bcc,
+         bcc: 'bala@clearstack.io',
          subject: subject)
   end
 end

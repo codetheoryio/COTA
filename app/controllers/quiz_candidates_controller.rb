@@ -1,28 +1,35 @@
 class QuizCandidatesController < ApplicationController
+  load_and_authorize_resource :quiz
+  load_and_authorize_resource :through => :quiz
 
-  before_action :set_quiz_candidate, only: [:show, :assessment, :submit_answer]
-  before_action :set_quiz, only: [:index, :create, :assessment, :submit_answer]
   before_action :set_candidate_question, only: [:submit_answer]
   before_action :can_take_assessment, :only => [:assessment, :submit_answer]
 
   def index
-    @quiz_candidates = @quiz.quiz_candidates.preload(:candidate)
+    @quiz_candidates = @quiz.quiz_candidates.includes(:candidate)
   end
 
   def show
   end
 
   def create
-    candidate = Candidate.where(email: candidate_params[:email]).last
+    check_can_invite_candidate
+    user = User.where(email: user_params[:email]).last
+    generated_password = Devise.friendly_token
 
     QuizCandidate.transaction do
-      if candidate.blank?
-        candidate = Candidate.create(candidate_params)
-      end
-      qc = @quiz.quiz_candidates.new()
-      qc.candidate = candidate
-      qc.save!
-      qc.prepare_quiz
+      user = create_new_user(generated_password) if user.blank?
+
+      candidate = create_or_update_candidate(user, candidate_params)
+
+      byebug
+      quiz_candidate = @quiz.quiz_candidates.new()
+      quiz_candidate.candidate = candidate
+      quiz_candidate.save!
+      quiz_candidate.prepare_quiz
+
+      # Invite Mail to Candidate
+      CandidateNotifier.send_candidate_invitation(candidate, generated_password, quiz_candidate).deliver_now
     end
 
     respond_to do |format|
@@ -66,14 +73,6 @@ class QuizCandidatesController < ApplicationController
 
   private
 
-  def set_quiz_candidate
-    @quiz_candidate = QuizCandidate.preload(:quiz, :candidate, :candidate_questions).find params[:id]
-  end
-
-  def set_quiz
-    @quiz = Quiz.preload(:quiz_candidates).find params[:quiz_id]
-  end
-
   def set_candidate_question
     @candidate_question = CandidateQuestion.find(candidate_question_params[:id])
   end
@@ -82,23 +81,50 @@ class QuizCandidatesController < ApplicationController
     if @quiz_candidate.secure_assessment_url.present?
       if @quiz_candidate.completed?
         redirect_to quizzes_url, alert: "System says you already completed the Quiz!"
+        return
       end
       if @quiz_candidate.secure_token_expire_at < Time.zone.now
         @quiz_candidate.set_timeout!
         redirect_to quizzes_url, alert: "Your time for taking Quiz is over!"
+        return
       end
       if @quiz_candidate.assessment_ends_at.present? && @quiz_candidate.assessment_ends_at < Time.zone.now
         @quiz_candidate.set_timeout! unless @quiz_candidate.timeout?
         redirect_to quizzes_url, alert: "Your time for taking Quiz is over!"
+        return
       end
       unless params[:secure].present? && params[:secure] == @quiz_candidate.secure_assessment_token
         redirect_to quizzes_url, alert: "You must be invited and have a valid URL to submit assessment"
+        return
       end
     end
   end
 
+  def check_can_invite_candidate
+    QuizCandidate.check_can_create_quiz_candidate(@quiz, user_params[:email])
+  end
+
+  def create_new_user(generated_password)
+    User.create_new_user(user_params.merge(password: generated_password, password_confirmation: generated_password))
+  end
+
+  def create_or_update_candidate(user, candidate_params)
+    if user.candidate.blank?
+      candidate = user.build_candidate(candidate_params)
+      candidate.save!
+    else
+      candidate = user.candidate
+      candidate.update_attributes(candidate_params)
+    end
+    candidate
+  end
+
+  def user_params
+    params.require(:user).permit(:first_name, :last_name, :email)
+  end
+
   def candidate_params
-    params.require(:candidate).permit(:name, :email, :applied_position)
+    params.require(:candidate).permit(:phone, :experience, :applied_position)
   end
 
   def candidate_question_params

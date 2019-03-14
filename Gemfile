@@ -49,6 +49,7 @@ end
 gem 'awesome_print'
 gem 'kaminari'
 gem 'devise'
+gem 'cancancan'
 gem 'rolify'
 gem 'simple_form'
 gem 'acts-as-taggable-on'

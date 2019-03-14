@@ -36,6 +36,15 @@ class QuizCandidate < ActiveRecord::Base
     end
   end
 
+  def self.check_can_create_quiz_candidate(quiz, candidate_email)
+    user = User.find_by_email(candidate_email)
+    candidate = user&.candidate
+    return if candidate.blank?
+
+    quiz_candidate_exists = quiz.quiz_candidates.where(candidate_id: candidate.id).present?
+    raise CanCan::AccessDenied.new("Candidate is Already invited!") if quiz_candidate_exists
+  end
+
   def generate_secure_token
     self.secure_assessment_token = Devise.friendly_token if self.secure_assessment_token.blank?
     self.secure_token_expire_at = Time.zone.now + 3.days if self.secure_token_expire_at.blank?

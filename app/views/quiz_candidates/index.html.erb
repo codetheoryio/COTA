@@ -14,8 +14,8 @@
       <% @quiz_candidates.each do |qc| %>
       <tr>
         <td>
-          <%= qc.candidate.name %> <br/>
-          <small><span class="text-muted"><%= qc.candidate.email %></span></small><br/>
+          <%= qc.candidate.user.first_name %> <br/>
+          <small><span class="text-muted"><%= qc.candidate.user.email %></span></small><br/>
         </td>
         <td class="left">
           <%= display_status(qc.status) %>

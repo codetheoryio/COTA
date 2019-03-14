@@ -1,5 +1,5 @@
 <% content_for :header do %>
-    <%= @quiz_candidate.candidate.name %>'s Answers
+    <%= @quiz_candidate.candidate.user.name %>'s Answers
 <% end %>
 
 <% unless @quiz_candidate.candidate_questions.count.zero? %>
@@ -68,6 +68,6 @@
 
 <% else %>
     <div class="lead">
-      <%= @quiz_candidate.candidate.name %>'s Quiz is yet to be prepared.
+      <%= @quiz_candidate.candidate.user.name %>'s Quiz is yet to be prepared.
     </div>
 <% end %>

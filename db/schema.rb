@@ -37,8 +37,7 @@ ActiveRecord::Schema.define(version: 20190312053317) do
   add_index "candidate_questions", ["quiz_candidate_id"], name: "index_candidate_questions_on_quiz_candidate_id", using: :btree
 
   create_table "candidates", force: :cascade do |t|
-    t.string   "name",             limit: 255
-    t.string   "email",            limit: 255
+    t.integer  "user_id",          limit: 4
     t.string   "phone",            limit: 255
     t.string   "applied_position", limit: 255
     t.decimal  "experience",                   precision: 10

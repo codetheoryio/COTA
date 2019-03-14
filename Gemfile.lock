@@ -52,6 +52,7 @@ GEM
       sass (>= 3.5.2)
     builder (3.2.3)
     byebug (10.0.2)
+    cancancan (2.3.0)
     climate_control (0.2.0)
     cocoon (1.2.11)
     coffee-rails (4.1.1)
@@ -231,6 +232,7 @@ DEPENDENCIES
   awesome_print
   bootstrap (~> 4.0.0)
   byebug
+  cancancan
   cocoon
   coffee-rails (~> 4.1.0)
   daemons
