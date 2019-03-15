@@ -1,0 +1,74 @@
+<% content_for :header do %>
+    Candidate Profile Page
+<% end %>
+
+<div class="section">
+  <table class="striped">
+    <thead>
+      <td class="center col s12">
+        <h5><i class="material-icons prefix">account_circle</i>
+        <%= @candidate.name %></h5>
+      </td>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="col s6">Email</td>
+        <td class="col s6"><%= @candidate.email %></td>
+      </tr>
+      <tr>
+        <td class="col s6">Mobile</td>
+        <td class="col s6"><%= @candidate.phone %></td>
+      </tr>
+      <tr>
+        <td class="col s6">Applied Position</td>
+        <td class="col s6"><%= @candidate.applied_position %></td>
+      </tr>
+      <tr>
+        <td class="col s6">Experience</td>
+        <td class="col s6"><%= @candidate.experience %></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="divider"></div>
+
+<div class="section">
+  <h3>Candidate Quiz Details</h3>
+
+  <% if @quiz_candidates.present? %>
+      <table class="table striped">
+        <tr>
+          <th><h6>Quiz Name</h6></th>
+          <th><h6>Status</h6></th>
+          <th><h6>Remarks</h6></th>
+          <th><h6>Invited At</h6></th>
+          <th></th>
+          <th></th>
+        </tr>
+        <% @quiz_candidates.each do |qc| %>
+            <tr>
+              <td>
+                <%= qc.quiz.name %> <br/>
+                <small><span class="text-muted"><%= qc.quiz.job_title %></span></small>
+              </td>
+              <td class="left">
+                <%= display_status(qc.status) %>
+              </td>
+              <td>
+                <%= qc.remarks %>
+              </td>
+              <td>
+                <%= qc.created_at.strftime("%d-%m-%Y") %>
+              </td>
+              <td><%= link_to('Take Assessment', polymorphic_url([qc.quiz, qc], action: 'assessment', :secure => qc.secure_assessment_token)) %></td>
+              <td><%= link_to('Review', quiz_quiz_candidate_path(qc.quiz_id, qc.id)) %></td>
+            </tr>
+        <% end %>
+      </table>
+  <% else %>
+      <div class="lead">
+        Candidate not invited for any Quiz yet.
+      </div>
+  <% end %>
+</div>

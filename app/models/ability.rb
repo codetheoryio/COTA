@@ -33,9 +33,9 @@ class Ability
       if user.has_role? :admin
         can :manage, :all
         can :manage, Quiz
-      else
-        can :read, Quiz
-        can [:assessment, :submit_answer], QuizCandidate, candidate_id: user&.candidate&.id
+      elsif user.has_role? :candidate
+        can :show, Candidate, id: user&.candidate&.id
+        can [:show, :assessment, :submit_answer], QuizCandidate, candidate_id: user&.candidate&.id
       end
     end
   end

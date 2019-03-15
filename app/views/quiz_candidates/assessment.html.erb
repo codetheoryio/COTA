@@ -93,10 +93,15 @@
       $('#countdown-timer').countdown({
         until: '+<%= @quiz_candidate.assessment_ends_at > Time.zone.now ? (@quiz_candidate.assessment_ends_at - Time.zone.now).to_i : 0 %>s',
         expiryText: '<div class="over">It\'s all over</div>',
+        onExpiry: assessment_ending_prompt,
         expiryUrl: '<%= assessment_quiz_quiz_candidate_path(@quiz, @quiz_candidate) %>'
       });
     });
   });
+  
+  function assessment_ending_prompt() {
+    alert('Thank you for Taking the Quiz. Quiz time is elapsed. All your answers will be submit Successfully.');
+  }
 
   // Added to restrict viewing javascript developer console
   // TODO - Fix issue of restricting further pages

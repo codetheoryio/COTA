@@ -1,5 +1,5 @@
 <div class="row">
-<nav class="navbar navbar-expand-lg navbar-dark bg-info">
+<nav class="navbar navbar-expand-lg navbar-dark bg-info orange">
   <a class="navbar-brand" href="/">CS-Quiz</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -8,24 +8,27 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <% if user_signed_in? %>
-      <li class="nav-item active">
-        <a class="nav-link" href="#"> Home <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <%= link_to('Candidates', candidates_path(), class: "nav-link") %>
-      </li>
-      <li class="nav-item">
-        <%= link_to('Quizzes', quizzes_path(), class: "nav-link") %>
-      </li>
-      <li class="nav-item">
-        <%= link_to('Questions', questions_path(), class: "nav-link") %>
-      </li>
+        <% if current_user.has_role? :admin %>
+          <li class="nav-item">
+            <%= link_to('Quizzes', quizzes_path(), class: "nav-link") %>
+          </li>
+          <li class="nav-item">
+            <%= link_to('Candidates', candidates_path(), class: "nav-link") %>
+          </li>
+          <li class="nav-item">
+            <%= link_to('Questions', questions_path(), class: "nav-link") %>
+          </li>
+        <% end %>
       <% end %>
     </ul>
     <ul class="navbar-nav my-3 my-lg-0">
       <% if user_signed_in? %>
         <li class="nav-item">
-          <a class="nav-link" href="#"> Profile</a>
+          <% if current_user.has_role? :candidate %>
+            <%= link_to('Profile', candidate_url(current_user.candidate), class: "nav-link") %>
+          <% else%>
+            <a class="nav-link" href="/"> Profile</a>
+          <% end%>
         </li>
         <li class="nav-item">
           <%= link_to('Logout', destroy_user_session_url(:host => request.host), :method => :delete, class: "nav-link") %>

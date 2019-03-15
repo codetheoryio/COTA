@@ -6,7 +6,7 @@ class QuestionSourcesController < ApplicationController
   end
 
   def create
-    @question_source = QuestionSource.new(source_params)
+    @question_source = QuestionSource.new(question_source_params)
     @question_source.save!
     QuestionUploaderJob.perform_later(@question_source)
     flash[:success] = "Questions uploaded"
@@ -27,7 +27,7 @@ class QuestionSourcesController < ApplicationController
 
   private
 
-  def source_params
+  def question_source_params
     params.require(:question_source).permit(:question_sheet)
   end
 end

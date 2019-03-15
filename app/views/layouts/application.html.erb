@@ -12,6 +12,12 @@
 <div class="container-fluid">
 	<%= render 'layouts/navbar' %>
 
+  <div class="nav-wrapper">
+    <div class="col s12">
+      <%= raw @render_breadcrumb %>
+    </div>
+  </div>
+
 <h3><%= content_for?(:header) ? yield(:header) : "Dashboard" %></h3>
 
 <div>

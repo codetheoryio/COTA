@@ -5,6 +5,10 @@ class CandidatesController < ApplicationController
     @candidates = Candidate.order("created_at DESC")
   end
 
+  def show
+    @quiz_candidates = @candidate.quiz_candidates if @candidate.present?
+  end
+
   def send_invite
     @candidate = Candidate.where(email: candidate_params[:email]).last
     @quiz = Quiz.where(id: candidate_params[:quiz_id]).last

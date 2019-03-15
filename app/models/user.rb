@@ -9,8 +9,10 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  def self.create_new_user(params)
-    User.create!(params)
+  def self.create_new_candidate_user(params)
+    user = User.create!(params)
+    user.add_role(:candidate) unless user.has_role? :candidate
+    user
   end
 
   def assign_default_role

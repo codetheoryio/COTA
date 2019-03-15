@@ -12,7 +12,7 @@
       </tr>
       <% @candidates.each do |candidate| %>
           <tr>
-            <td><%= candidate.name %></td>
+            <td><%= link_to candidate.name, candidate_path(candidate) %></td>
             <td>
               <p class="lead">
                 <%= candidate.email %>

@@ -8,7 +8,9 @@
       <tr>
         <th><h6>S.No.</h6></th>
         <th><h6>Question</h6></th>
-        <th><h6>Remarks</h6></th>
+        <% if can? :manage, QuizCandidate  %>
+          <th><h6>Remarks</h6></th>
+        <% end %>
       </tr>
       <% @quiz_candidate.candidate_questions.includes(:answer, :question => [:options]).each_with_index do |candidate_question, index|
           question = candidate_question.question
@@ -55,11 +57,13 @@
               <% end %>
 
             </td>
-            <td>
-              <p class="left">
-                <textarea></textarea>
-              </p>
-            </td>
+            <% if can? :manage, QuizCandidate  %>
+              <td>
+                <p class="left">
+                  <textarea></textarea>
+                </p>
+              </td>
+            <% end %>
           </tr>
       <% end %>
     </table>
