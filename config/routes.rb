@@ -14,10 +14,15 @@ Rails.application.routes.draw do
   devise_for :users, :controllers => { registrations: 'registrations' }
 
   # You can have the root of your site routed with "root"
-  root 'quizzes#index'
+  root 'home#index'
 
   resources :quizzes do
-    resources :quiz_candidates, :only => [:index, :show, :create]
+    resources :quiz_candidates, :only => [:index, :show, :create] do
+      member do
+        get 'assessment'
+        post 'submit_answer'
+      end
+    end
   end
 
   resources :question_sources do

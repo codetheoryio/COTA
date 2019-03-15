@@ -52,6 +52,7 @@ GEM
       sass (>= 3.5.2)
     builder (3.2.3)
     byebug (10.0.2)
+    cancancan (2.3.0)
     climate_control (0.2.0)
     cocoon (1.2.11)
     coffee-rails (4.1.1)
@@ -93,6 +94,18 @@ GEM
     jquery-ui-rails (6.0.1)
       railties (>= 3.2.16)
     json (1.8.6)
+    kaminari (1.1.1)
+      activesupport (>= 4.1.0)
+      kaminari-actionview (= 1.1.1)
+      kaminari-activerecord (= 1.1.1)
+      kaminari-core (= 1.1.1)
+    kaminari-actionview (1.1.1)
+      actionview
+      kaminari-core (= 1.1.1)
+    kaminari-activerecord (1.1.1)
+      activerecord
+      kaminari-core (= 1.1.1)
+    kaminari-core (1.1.1)
     loofah (2.2.2)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -219,6 +232,7 @@ DEPENDENCIES
   awesome_print
   bootstrap (~> 4.0.0)
   byebug
+  cancancan
   cocoon
   coffee-rails (~> 4.1.0)
   daemons
@@ -228,6 +242,7 @@ DEPENDENCIES
   jbuilder (~> 2.0)
   jquery-rails
   jquery-ui-rails
+  kaminari
   material-sass (~> 4.0.0)
   material_icons
   materialize-sass (~> 1.0.0.alpha4)

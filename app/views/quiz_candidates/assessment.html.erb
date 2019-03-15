@@ -1,0 +1,125 @@
+<% content_for :header do %>
+    Candidate Quiz
+<% end %>
+<div id="countdown-timer" class="right" style="width: 15%;"></div>
+
+<% if !@candidate_questions.count.zero? %>
+
+  <%= simple_form_for(@candidate_questions.first, method: :post, url: submit_answer_quiz_quiz_candidate_path) do |f| %>
+    <%= hidden_field_tag(:secure, params[:secure]) %>
+    <%= hidden_field_tag(:page, params[:page]) %>
+    <%= f.input :id, :as => :hidden, :input_html => { :value => f.object.id }%>
+    <table class="table striped">
+      <thead>
+        <!--<th><h6>Question</h6></th>-->
+      </thead>
+      <tbody>
+      <% @candidate_questions.each_with_index do |candidate_question, index|
+        question = candidate_question.question
+      %>
+        <tr>
+          <td>
+            <p class="lead">
+              <%= question.title %>
+            </p>
+            <% if(question.body.present?) %>
+                <div class="row">
+                  <div class="col m6">
+                    <div class="card-panel">
+                      <%= question.body.try(:html_safe) %>
+                    </div>
+                  </div>
+                </div>
+            <% end %>
+            <% if question.options.any? %>
+              <%= f.simple_fields_for :answer do |ans| %>
+              <ul class="collection">
+                <% question.options.each do |opt| %>
+                    <li class="collection-item">
+                      <%#= ans.radio_button :option, opt.id %>
+                      <%#= ans.label :option, opt.body.try(:html_safe) %>
+                      <%=  ans.collection_radio_buttons :option_id, [[opt.id, opt.body.try(:html_safe)]], :first, :last, selected: ans.object.option_id %>
+                    </li>
+                <% end %>
+              </ul>
+              <%	end %>
+            <% else %>
+              <%= f.simple_fields_for :answer do |ans| %>
+                <ul class="collection">
+                  <li class="collection-item">
+                    <%=  ans.input :answer_body, as: :text, label: 'Answer' %>
+                  </li>
+                </ul>
+              <% end %>
+            <% end %>
+
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+      <tfoot>
+        <div class="fixed-action-btn horizontal">
+          <%  if @last_page == true %>
+            <%= f.button :submit, 'Finish Quiz', class: "btn waves-effect waves-light" %>
+          <% else %>
+            <%= f.button :submit, 'Submit Answer', class: "btn waves-effect waves-light" %>
+          <% end %>
+        </div>
+      </tfoot>
+    </table>
+  <% end %>
+
+    <div class="pagination">
+      <%= paginate @candidate_questions, outer_window: 3 %>
+    </div>
+
+
+<% else %>
+    <%  if @quiz_done == true %>
+      <div class="lead">
+        <%= @quiz_candidate.candidate.name %>'s Quiz is Completed.
+      </div>
+    <% else %>
+      <div class="lead">
+        <%= @quiz_candidate.candidate.name %>'s Quiz is yet to be prepared.
+      </div>
+    <% end %>
+<% end %>
+
+<script type="text/javascript">
+  jQuery(document).on("turbolinks:load", function() {
+    $(function () {
+//      $('#countdown-timer').countdown({until: '+30m'});
+      $('#countdown-timer').countdown({
+        until: '+<%= @quiz_candidate.assessment_ends_at > Time.zone.now ? (@quiz_candidate.assessment_ends_at - Time.zone.now).to_i : 0 %>s',
+        expiryText: '<div class="over">It\'s all over</div>',
+        onExpiry: assessment_ending_prompt,
+        expiryUrl: '<%= assessment_quiz_quiz_candidate_path(@quiz, @quiz_candidate) %>'
+      });
+    });
+  });
+  
+  function assessment_ending_prompt() {
+    alert('Thank you for Taking the Quiz. Quiz time is elapsed. All your answers will be submit Successfully.');
+  }
+
+  // Added to restrict viewing javascript developer console
+  // TODO - Fix issue of restricting further pages
+  $(document).bind("contextmenu",function(e) {
+    e.preventDefault();
+  });
+
+  $(document).keydown(function(e){
+    if(e.which === 123){
+      return false;
+    }
+  });
+
+  // TODO - Should not allow Back Button
+//  jQuery(document).on("turbolinks:load", function() {
+//    window.location.hash="no-back-button";
+//    window.location.hash="Again-No-back-button"; //again because google chrome don't insert first hash into history
+//    window.onhashchange=function(){window.location.hash="no-back-button";}
+//  });
+
+</script>

@@ -17,4 +17,6 @@
 //= require bootstrap
 //= require material
 //= require cocoon
+//= require jquery.plugin.js
+//= require jquery.countdown.js
 //= require_tree .

@@ -1,4 +1,5 @@
 class QuizzesController < ApplicationController
+  load_and_authorize_resource
   before_action :authenticate_user!
 
   def new
@@ -13,6 +14,7 @@ class QuizzesController < ApplicationController
 
   def index
     @quizzes = Quiz.order("created_at DESC")
+    @user = User.new
   end
 
   def show

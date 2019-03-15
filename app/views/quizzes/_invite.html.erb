@@ -1,23 +1,35 @@
   <%= simple_form_for :candidate, url: quiz_quiz_candidates_path(quiz.id) do |f| %>
-    <div class="modal-content">
-      <div class="modal-header card-panel teal lighten-2">
-        <h4 class="">Invite New Candidates</h4>
-      </div>
-      <div class="modal-body">
-        <div class="input-field col s6">
-          <%= f.input :name, as: :string %>
-        </div>
-        <div class="input-field col s6">
-          <%= f.input :applied_position, as: :string, label: "Job Position" %>
-        </div>
-        <div class="input-field col s6">
-          <%= f.input :email, as: :string %>
-        </div>
-      </div>
+    <%= simple_fields_for @user, url: registration_path(@user) do |u| %>
 
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="close waves-effect waves-green teal btn" data-dismiss="modal" aria-hidden="true">close</button>
-      <%= f.button :submit, :value => 'Send Invites', :class=>'modal-close waves-effect waves-green teal btn'%>
-    </div>
+      <div class="modal-content">
+        <div class="modal-header card-panel teal lighten-2">
+          <h4 class="">Invite New Candidates</h4>
+        </div>
+        <div class="modal-body">
+          <div class="input-field col s6">
+            <%= u.input :first_name, as: :string %>
+          </div>
+          <div class="input-field col s6">
+            <%= u.input :last_name, as: :string %>
+          </div>
+          <div class="input-field col s6">
+            <%= u.input :email, as: :email %>
+          </div>
+          <div class="input-field col s6">
+            <%= f.input :phone, as: :tel %>
+          </div>
+          <div class="input-field col s6">
+            <%= f.input :applied_position, as: :string, label: "Job Position" %>
+          </div>
+          <div class="input-field col s6">
+            <%= f.input :experience, as: :string %>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="close waves-effect waves-green teal btn" data-dismiss="modal" aria-hidden="true">close</button>
+        <%= f.button :submit, :value => 'Send Invites', :class=>'modal-close waves-effect waves-green teal btn'%>
+      </div>
+    <% end %>
   <% end %>

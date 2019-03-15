@@ -1,18 +1,20 @@
 <% content_for :header do %>
-    <%= @quiz_candidate.candidate.name %>'s Answers
+    <%= @quiz_candidate.candidate.user.name %>'s Answers
 <% end %>
 
-<% unless @quiz_candidate.answers.count.zero? %>
+<% unless @quiz_candidate.candidate_questions.count.zero? %>
 
     <table class="table striped">
       <tr>
         <th><h6>S.No.</h6></th>
         <th><h6>Question</h6></th>
-        <th><h6>Remarks</h6></th>
+        <% if can? :manage, QuizCandidate  %>
+          <th><h6>Remarks</h6></th>
+        <% end %>
       </tr>
-      <% @quiz_candidate.answers.preload(:question, :option).each_with_index do |answer, index|
-          question = answer.question
-          marked_option = answer.option
+      <% @quiz_candidate.candidate_questions.includes(:answer, :question => [:options]).each_with_index do |candidate_question, index|
+          question = candidate_question.question
+          marked_option = candidate_question.answer&.option
       %>
           <tr>
             <td><%= index+1 %></td>
@@ -30,27 +32,38 @@
                   </div>
               <% end %>
               <% if question.options.any? %>
+                <ul class="collection">
+                  <% question.options.each { |opt| %>
+                    <li class="collection-item">
+                      <% if opt.is_correct %>
+                          <span class="new badge green" data-badge-caption="">Correct Answer</span>
+                      <% end %>
+                      <% if(marked_option.present? && opt.id == marked_option.id) %>
+                          <span class="new badge blue" data-badge-caption="">Candidate Marked</span>
+                      <% end %>
+                      <%=opt.body.try(:html_safe)%>
+                    </li>
+                  <% } %>
+                </ul>
+              <% else %>
                   <ul class="collection">
-                    <% question.options.each { |opt| %>
-                        <li class="collection-item">
-                          <% if opt.is_correct %>
-                              <span class="new badge green" data-badge-caption="">Correct Answer</span>
-                          <% end %>
-                          <% if(marked_option.present? && opt.id == marked_option.id) %>
-                              <span class="new badge blue" data-badge-caption="">Candidate Marked</span>
-                          <% end %>
-                          <%=opt.body.try(:html_safe)%>
-                        </li>
-                    <% } %>
+                    <li class="collection-item">
+                      <% if candidate_question.answer.present? %>
+                        <span class="new badge blue" data-badge-caption="">Candidate Answer</span>
+                        <%=  candidate_question.answer&.answer_body %>
+                      <% end %>
+                    </li>
                   </ul>
               <% end %>
 
             </td>
-            <td>
-              <p class="left">
-                <textarea></textarea>
-              </p>
-            </td>
+            <% if can? :manage, QuizCandidate  %>
+              <td>
+                <p class="left">
+                  <textarea></textarea>
+                </p>
+              </td>
+            <% end %>
           </tr>
       <% end %>
     </table>
@@ -59,6 +72,6 @@
 
 <% else %>
     <div class="lead">
-      <%= @quiz_candidate.candidate.name %>'s Quiz is yet to be prepared.
+      <%= @quiz_candidate.candidate.user.name %>'s Quiz is yet to be prepared.
     </div>
 <% end %>
