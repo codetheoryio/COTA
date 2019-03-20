@@ -17,7 +17,7 @@ Rails.application.routes.draw do
   root 'home#index'
 
   resources :quizzes do
-    resources :quiz_candidates, :only => [:index, :show, :create] do
+    resources :quiz_candidates, :path => "candidates", :only => [:index, :show, :create] do
       member do
         get 'assessment'
         post 'submit_answer'

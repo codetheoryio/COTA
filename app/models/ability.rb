@@ -35,7 +35,7 @@ class Ability
         can :manage, Quiz
       elsif user.has_role? :candidate
         can :show, Candidate, id: user&.candidate&.id
-        can [:show, :assessment, :submit_answer], QuizCandidate, candidate_id: user&.candidate&.id
+        can [:assessment, :submit_answer], QuizCandidate, candidate_id: user&.candidate&.id
       end
     end
   end

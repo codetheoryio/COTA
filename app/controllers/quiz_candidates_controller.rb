@@ -6,7 +6,7 @@ class QuizCandidatesController < ApplicationController
   before_action :can_take_assessment, :only => [:assessment, :submit_answer]
 
   def index
-    @render_breadcrumb = breadcrumb_path({"Quizzes" => polymorphic_path(Quiz), "Quiz" => polymorphic_path([@quiz]), :disable => "Quiz Candidates"}, false)
+    @render_breadcrumb = breadcrumb_path({"Quizzes" => polymorphic_path(Quiz), "Quiz" => polymorphic_path([@quiz]), :disable => "Candidates"}, false)
     @quiz_candidates = @quiz.quiz_candidates.includes(:candidate)
   end
 
@@ -16,10 +16,13 @@ class QuizCandidatesController < ApplicationController
   def create
     check_can_invite_candidate
     user = User.where(email: user_params[:email]).last
-    generated_password = Devise.friendly_token
+    generated_password = ''
 
     QuizCandidate.transaction do
-      user = create_new_candidate_user(generated_password) if user.blank?
+      if user.blank?
+        generated_password = Devise.friendly_token
+        user = create_new_candidate_user(generated_password)
+      end
 
       candidate = create_or_update_candidate(user, candidate_params)
 
@@ -58,17 +61,19 @@ class QuizCandidatesController < ApplicationController
   end
 
   def submit_answer
-    @candidate_question.assign_attributes(answered: true)
+    end_quiz = params[:end_quiz] == 'End Quiz' ? true : false
+    @candidate_question.assign_attributes(answered: true) if answer_available? #candidate_question_params[:answer_attributes].blank?
     @candidate_question.assign_attributes(candidate_question_params)
     @candidate_question.save!
     @quiz_done = @quiz_candidate.candidate_questions.not_answered.blank?
-    next_page = params[:page].blank? ? 2 : params[:page].to_i + 1
+    next_page =  @quiz_candidate.candidate_questions.page(params[:page]).next_page
     respond_to do |format|
-      if @quiz_done
+      if @quiz_done || end_quiz
         @quiz_candidate.set_completed!
         format.html { redirect_to candidate_url(@quiz_candidate.candidate), notice: "Thank you for taking the quiz." }
       else
-        format.html { redirect_to assessment_quiz_quiz_candidate_url(page: next_page, secure: params[:secure]) }
+        alert_msg = 'There are some questions not answered, Please take a look!' if params[:page].present? && next_page.blank?
+        format.html { redirect_to assessment_quiz_quiz_candidate_url(page: next_page, secure: params[:secure]), alert: alert_msg || nil }
       end
     end
   end
@@ -81,6 +86,9 @@ class QuizCandidatesController < ApplicationController
 
   def can_take_assessment
     if @quiz_candidate.secure_assessment_url.present?
+      # unless @quiz_candidate.right_candidate?(current_user)
+      #   raise CanCan::AccessDenied.new("You are not a Right user to access this Assessment!")
+      # end
       if @quiz_candidate.completed?
         raise CanCan::AccessDenied.new("System says you already completed the Quiz!")
       end
@@ -117,6 +125,11 @@ class QuizCandidatesController < ApplicationController
     candidate
   end
 
+  def answer_available?
+    answer_attr = candidate_question_params[:answer_attributes]
+    answer_attr.present? && (answer_attr[:option_id].present? || answer_attr[:answer_body].present?)
+  end
+
   def user_params
     params.require(:user).permit(:first_name, :last_name, :email)
   end
@@ -126,6 +139,6 @@ class QuizCandidatesController < ApplicationController
   end
 
   def candidate_question_params
-    params.require(:candidate_question).permit(:id, answer_attributes: [:option_id, :answer_body])
+    params.require(:candidate_question).permit(:id, answer_attributes: [:id, :option_id, :answer_body])
   end
 end

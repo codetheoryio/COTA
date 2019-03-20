@@ -20,6 +20,7 @@
         <tr>
           <td>
             <p class="lead">
+              <span><%= @candidate_questions.current_page %>.</span>
               <%= question.title %>
             </p>
             <% if(question.body.present?) %>
@@ -59,10 +60,9 @@
       </tbody>
       <tfoot>
         <div class="fixed-action-btn horizontal">
+          <%= f.button :submit, 'Submit Answer', class: "btn waves-effect waves-light" %>
           <%  if @last_page == true %>
-            <%= f.button :submit, 'Finish Quiz', class: "btn waves-effect waves-light" %>
-          <% else %>
-            <%= f.button :submit, 'Submit Answer', class: "btn waves-effect waves-light" %>
+            <%= f.button :submit, name: "end_quiz",value: "End Quiz", data: {confirm: "Are you sure to End Quiz?"}, class: "btn waves-effect waves-light" %>
           <% end %>
         </div>
       </tfoot>
@@ -75,15 +75,13 @@
 
 
 <% else %>
-    <%  if @quiz_done == true %>
-      <div class="lead">
-        <%= @quiz_candidate.candidate.name %>'s Quiz is Completed.
-      </div>
-    <% else %>
-      <div class="lead">
-        <%= @quiz_candidate.candidate.name %>'s Quiz is yet to be prepared.
-      </div>
-    <% end %>
+  <%  if @quiz_done == true %>
+    <div class="lead"><%= @quiz_candidate.candidate.name %>'s Quiz is Completed.</div>
+  <% elsif @candidate_questions.out_of_range? %>
+      <div class="lead"><%= @quiz_candidate.candidate.name %>'s Quiz question is out of range.</div>
+  <% else %>
+    <div class="lead"><%= @quiz_candidate.candidate.name %>'s Quiz is yet to be prepared.</div>
+  <% end %>
 <% end %>
 
 <script type="text/javascript">
@@ -94,7 +92,7 @@
         until: '+<%= @quiz_candidate.assessment_ends_at > Time.zone.now ? (@quiz_candidate.assessment_ends_at - Time.zone.now).to_i : 0 %>s',
         expiryText: '<div class="over">It\'s all over</div>',
         onExpiry: assessment_ending_prompt,
-        expiryUrl: '<%= assessment_quiz_quiz_candidate_path(@quiz, @quiz_candidate) %>'
+        expiryUrl: '<%= assessment_quiz_quiz_candidate_url(page: params[:page], secure: params[:secure]) %>'
       });
     });
   });

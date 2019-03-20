@@ -2,7 +2,7 @@
     <%= @quiz_candidate.candidate.user.name %>'s Answers
 <% end %>
 
-<% unless @quiz_candidate.candidate_questions.count.zero? %>
+<% if @quiz_candidate.candidate_questions.present? && @quiz_candidate.candidate_questions.answered.present? %>
 
     <table class="table striped">
       <tr>
@@ -12,7 +12,7 @@
           <th><h6>Remarks</h6></th>
         <% end %>
       </tr>
-      <% @quiz_candidate.candidate_questions.includes(:answer, :question => [:options]).each_with_index do |candidate_question, index|
+      <% @quiz_candidate.candidate_questions.includes(:answer, :question => [:options]).answered.each_with_index do |candidate_question, index|
           question = candidate_question.question
           marked_option = candidate_question.answer&.option
       %>
@@ -70,8 +70,12 @@
 
 
 
+<% elsif @quiz_candidate.started? %>
+  <div class="lead">
+    <%= @quiz_candidate.candidate.name %>'s Quiz answers is not yet available.
+  </div>
 <% else %>
-    <div class="lead">
-      <%= @quiz_candidate.candidate.user.name %>'s Quiz is yet to be prepared.
-    </div>
+  <div class="lead">
+    <%= @quiz_candidate.candidate.name %>'s Quiz is yet to be prepared.
+  </div>
 <% end %>

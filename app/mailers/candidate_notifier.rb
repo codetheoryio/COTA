@@ -5,7 +5,7 @@ class CandidateNotifier < BaseNotifier
   end
 
   def email(candidate, generated_password, quiz_candidate)
-    return if generated_password.blank?
+    @new_user =  generated_password.blank? ? false : true
     @notifier_candidate = candidate
     @quiz_candidate = quiz_candidate
     @password = generated_password

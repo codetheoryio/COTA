@@ -14,13 +14,13 @@
             <p><%= "Time: #{quiz.time_limit}" %></p>
           </div>
           <div class="card-action">
-            <%= link_to 'Invite Candidates', '#', :class => 'invite_new_candidates', :data => {:toggle => "modal", :target => "#invite_candidates-form-container"} %>
+            <%= link_to 'Invite Candidates', '#', :class => 'invite_new_candidates', :data => {:toggle => "modal", :target => "#invite_candidates-form-container-#{quiz.id}"} %>
             <%= link_to 'Candidates', quiz_quiz_candidates_path(quiz), :data => {:turbolinks => "false"} %>
             <%= link_to 'Manage Quiz', edit_quiz_path(quiz), :data => {:turbolinks => "false"} %>
           </div>
         </div>
       </div>
-        <div id="invite_candidates-form-container" class="modal modal-fixed-footer">
+        <div id="invite_candidates-form-container-<%= quiz.id%>" class="modal modal-fixed-footer">
           <%= render 'invite', quiz: quiz %>
         </div>
     <% end %>
