@@ -6,4 +6,5 @@ class CandidateQuestion < ActiveRecord::Base
   accepts_nested_attributes_for :answer
 
   scope :not_answered, -> {where(answered: [false, nil])}
+  scope :answered, -> {where(answered: true)}
 end

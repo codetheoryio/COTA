@@ -2,12 +2,8 @@
 
 <p>You have done well so far. As the next step, you are receiving this email to take up the technical test.
   This test take about <%= "#{@quiz_candidate.quiz.time_limit}" %> mins.
-  Please use your email-id(<%= "#{@notifier_candidate.email}" %>) as your username and <%= "#{@password}" %> as the password.
+  Please use your email-id(<%= "#{@notifier_candidate.email}" %>) as your username and <% if @new_user %><%= "#{@password}" %> as the password.<% else %>password.<% end %>
   You may access the test by logging in to <%= link_to "COTA", "#{@quiz_candidate.secure_assessment_url}" %>.</p>
 
-<p>
-  Thank you,
-</p>
-<p>
-  ClearStack, Inc
-</p>
+<p>Thank you,</p>
+<p>ClearStack, Inc</p>

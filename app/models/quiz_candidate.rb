@@ -69,6 +69,10 @@ class QuizCandidate < ActiveRecord::Base
     self.save!
   end
 
+  def right_candidate?(user)
+    self&.candidate&.user.id == user.id
+  end
+
   def prepare_quiz
     QuizCreatorJob.perform_later(self)
   end

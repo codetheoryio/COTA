@@ -44,7 +44,6 @@
           <th><h6>Remarks</h6></th>
           <th><h6>Invited At</h6></th>
           <th></th>
-          <th></th>
         </tr>
         <% @quiz_candidates.each do |qc| %>
             <tr>
@@ -62,7 +61,6 @@
                 <%= qc.created_at.strftime("%d-%m-%Y") %>
               </td>
               <td><%= link_to('Take Assessment', polymorphic_url([qc.quiz, qc], action: 'assessment', :secure => qc.secure_assessment_token)) %></td>
-              <td><%= link_to('Review', quiz_quiz_candidate_path(qc.quiz_id, qc.id)) %></td>
             </tr>
         <% end %>
       </table>

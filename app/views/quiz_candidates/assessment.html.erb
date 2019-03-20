@@ -75,15 +75,15 @@
 
 
 <% else %>
-    <%  if @quiz_done == true %>
-      <div class="lead">
-        <%= @quiz_candidate.candidate.name %>'s Quiz is Completed.
-      </div>
-    <% else %>
-      <div class="lead">
-        <%= @quiz_candidate.candidate.name %>'s Quiz is yet to be prepared.
-      </div>
-    <% end %>
+  <%  if @quiz_done == true %>
+    <div class="lead">
+      <%= @quiz_candidate.candidate.name %>'s Quiz is Completed.
+    </div>
+  <% else %>
+    <div class="lead">
+      <%= @quiz_candidate.candidate.name %>'s Quiz is yet to be prepared.
+    </div>
+  <% end %>
 <% end %>
 
 <script type="text/javascript">
@@ -94,7 +94,7 @@
         until: '+<%= @quiz_candidate.assessment_ends_at > Time.zone.now ? (@quiz_candidate.assessment_ends_at - Time.zone.now).to_i : 0 %>s',
         expiryText: '<div class="over">It\'s all over</div>',
         onExpiry: assessment_ending_prompt,
-        expiryUrl: '<%= assessment_quiz_quiz_candidate_path(@quiz, @quiz_candidate) %>'
+        expiryUrl: '<%= assessment_quiz_quiz_candidate_url(page: params[:page], secure: params[:secure]) %>'
       });
     });
   });
