@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 20190312053317) do
     t.integer  "option_id",             limit: 4
     t.text     "answer_body",           limit: 65535
     t.text     "remarks",               limit: 65535
+    t.float    "mark",                  limit: 24
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
   end

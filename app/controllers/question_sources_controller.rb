@@ -15,13 +15,13 @@ class QuestionSourcesController < ApplicationController
 
   def download_input_sheet
     send_file(
-        Rails.root.join(self.question_sheet.path)
+        Rails.root.join(@question_source.question_sheet.path)
     )
   end
 
   def download_result_sheet
     send_file(
-        Rails.root.join(self.result_sheet.path)
+        Rails.root.join(@question_source.result_sheet.path)
     )
   end
 

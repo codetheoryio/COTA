@@ -27,7 +27,7 @@
           <%= qc.created_at.strftime("%d-%m-%Y") %>
         </td>
         <td><%= link_to('Take Assessment', polymorphic_url([qc.quiz, qc], action: 'assessment', :secure => qc.secure_assessment_token)) %></td>
-        <td><%= link_to('Review', quiz_quiz_candidate_path(qc.quiz_id, qc.id)) %></td>
+        <td><%= link_to('Review', review_quiz_quiz_candidate_path(qc.quiz_id, qc.id)) %></td>
       </tr>
       <% end %>
     </table>

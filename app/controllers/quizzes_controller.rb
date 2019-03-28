@@ -8,7 +8,6 @@ class QuizzesController < ApplicationController
   end
 
   def edit
-    @quiz = Quiz.find(params[:id])
     @quiz.question_sets.build
   end
 
@@ -36,8 +35,6 @@ class QuizzesController < ApplicationController
   end
 
   def update
-    @quiz = Quiz.find(params[:id])
-
     respond_to do |format|
       if @quiz.update(quiz_params)
         format.html { redirect_to quizzes_url, notice: 'Quiz was successfully Updated.' }

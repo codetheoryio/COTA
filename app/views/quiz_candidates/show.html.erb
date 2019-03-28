@@ -1,5 +1,9 @@
 <% content_for :header do %>
     <%= @quiz_candidate.candidate.user.name %>'s Answers
+    <!--<p class="lead">-->
+      <!--Total Mark's-->
+      <!--(<%#= @candidate_answers.map(&:answer).inject(0) {|mark, ans| ans.mark + mark } %>/<%#= @quiz_candidate.candidate_questions.count %>)-->
+    <!--</p>-->
 <% end %>
 
 <% if @quiz_candidate.candidate_questions.present? && @quiz_candidate.candidate_questions.answered.present? %>
@@ -8,11 +12,8 @@
       <tr>
         <th><h6>S.No.</h6></th>
         <th><h6>Question</h6></th>
-        <% if can? :manage, QuizCandidate  %>
-          <th><h6>Remarks</h6></th>
-        <% end %>
       </tr>
-      <% @quiz_candidate.candidate_questions.includes(:answer, :question => [:options]).answered.each_with_index do |candidate_question, index|
+      <% @candidate_answers.each_with_index do |candidate_question, index|
           question = candidate_question.question
           marked_option = candidate_question.answer&.option
       %>
@@ -45,6 +46,7 @@
                     </li>
                   <% } %>
                 </ul>
+                <span class="badge"><%=  candidate_question.answer&.mark %> Mark</span>
               <% else %>
                   <ul class="collection">
                     <li class="collection-item">
@@ -54,16 +56,10 @@
                       <% end %>
                     </li>
                   </ul>
+                  <span class="badge"><%=  candidate_question.answer&.mark || 'No' %> Mark</span>
               <% end %>
 
             </td>
-            <% if can? :manage, QuizCandidate  %>
-              <td>
-                <p class="left">
-                  <textarea></textarea>
-                </p>
-              </td>
-            <% end %>
           </tr>
       <% end %>
     </table>

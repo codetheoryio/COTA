@@ -6,6 +6,7 @@ class CreateAnswers < ActiveRecord::Migration
       t.references :option, index: true, foreign_key: true
       t.text :answer_body
       t.text :remarks
+      t.float :mark
 
       t.timestamps null: false
     end
