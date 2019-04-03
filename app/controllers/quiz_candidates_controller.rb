@@ -2,7 +2,7 @@ class QuizCandidatesController < ApplicationController
   load_resource :quiz
   load_and_authorize_resource :through => :quiz
 
-  before_action :set_candidate_question, only: [:submit_answer]
+  before_action :set_candidate_question, only: [:submit_answer, :submit_review]
   before_action :can_take_assessment, :only => [:assessment, :submit_answer]
 
   def index
@@ -11,6 +11,7 @@ class QuizCandidatesController < ApplicationController
   end
 
   def show
+     @candidate_answers = @quiz_candidate.candidate_questions.includes(:answer => [:option], :question => [:options]).answered
   end
 
   def create
@@ -62,7 +63,7 @@ class QuizCandidatesController < ApplicationController
 
   def submit_answer
     end_quiz = params[:end_quiz] == 'End Quiz' ? true : false
-    @candidate_question.assign_attributes(answered: true) if answer_available? #candidate_question_params[:answer_attributes].blank?
+    @candidate_question.assign_attributes(answered: true) if answer_available?
     @candidate_question.assign_attributes(candidate_question_params)
     @candidate_question.save!
     @quiz_done = @quiz_candidate.candidate_questions.not_answered.blank?
@@ -70,10 +71,36 @@ class QuizCandidatesController < ApplicationController
     respond_to do |format|
       if @quiz_done || end_quiz
         @quiz_candidate.set_completed!
+        # Assessment completion Mail to Hiring Manager
+        CandidateNotifier.assessment_completed_notification(@quiz_candidate).deliver_now
         format.html { redirect_to candidate_url(@quiz_candidate.candidate), notice: "Thank you for taking the quiz." }
       else
         alert_msg = 'There are some questions not answered, Please take a look!' if params[:page].present? && next_page.blank?
         format.html { redirect_to assessment_quiz_quiz_candidate_url(page: next_page, secure: params[:secure]), alert: alert_msg || nil }
+      end
+    end
+  end
+
+  def review
+    @candidate_questions_subjective =  @quiz_candidate.candidate_questions.answered.subjective.page(params[:page])
+    @review_done = @quiz_candidate.candidate_questions.answered.subjective.map(&:answer).none? {|ans| ans.mark.nil?}
+  end
+
+  def submit_review
+    complete_review = params[:complete_review] == 'Complete Review' ? true : false
+    @candidate_question.assign_attributes(candidate_question_review_params)
+    @candidate_question.save!
+    @review_done = @quiz_candidate.candidate_questions.answered.subjective.map(&:answer).none? {|ans| ans.mark.nil?}
+    next_page =  @quiz_candidate.candidate_questions.answered.subjective.page(params[:page]).next_page
+    respond_to do |format|
+      if @review_done && complete_review
+        format.html { redirect_to quiz_quiz_candidate_url, notice: "Thank you for Reviewing the quiz." }
+      elsif @review_done
+        msg = 'All the questions are Reviewed, Please Complete the Review!'
+        format.html { redirect_to review_quiz_quiz_candidate_url(page: next_page), notice: msg }
+      else
+        alert_msg = 'There are some questions not Reviewed, Please take a look!' if params[:page].present? && next_page.blank? && !@review_done
+        format.html { redirect_to review_quiz_quiz_candidate_url(page: next_page), alert: alert_msg || nil }
       end
     end
   end
@@ -139,6 +166,10 @@ class QuizCandidatesController < ApplicationController
   end
 
   def candidate_question_params
-    params.require(:candidate_question).permit(:id, answer_attributes: [:id, :option_id, :answer_body])
+    params.require(:candidate_question).permit(:id, answer_attributes: [:id, :option_id, :answer_body, :remarks, :mark])
+  end
+
+  def candidate_question_review_params
+    params.require(:candidate_question).permit(:id, answer_attributes: [:id, :remarks, :mark])
   end
 end

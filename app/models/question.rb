@@ -18,7 +18,7 @@ class Question < ActiveRecord::Base
     Question.transaction do
       self.save!
       options = []
-      (3..6).each { |num|
+      (3..6).to_a.shuffle.each { |num|
         num == 3 ? options << {body: "<pre>#{row[num]}</pre>", is_correct: true} : options << {body: "<pre>#{row[num]}</pre>"} if row[num].try(:strip).present?
       }
       self.options.create(options)

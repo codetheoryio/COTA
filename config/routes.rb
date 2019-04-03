@@ -21,6 +21,8 @@ Rails.application.routes.draw do
       member do
         get 'assessment'
         post 'submit_answer'
+        get 'review'
+        post 'submit_review'
       end
     end
   end

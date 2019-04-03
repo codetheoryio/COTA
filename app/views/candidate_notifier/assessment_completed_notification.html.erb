@@ -1,0 +1,7 @@
+<p>Dear Hiring Manager,</p>
+
+<p>The test event scheduled for <%= "#{@notifier_candidate.name.titleize}" %>(<%= "#{@notifier_candidate.email}" %>) has been completed.
+  You may review the candidate's score report(s) by logging in to <%= link_to "COTA", review_quiz_quiz_candidate_url(@quiz_candidate.quiz, @quiz_candidate) %>.</p>
+
+<p>Thank you,</p>
+<p>ClearStack, Inc</p>
