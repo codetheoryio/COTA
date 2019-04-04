@@ -5,28 +5,28 @@
 <% @quizzes.in_groups_of(3) do |quizzes| %>
   <div class="row">
     <% quizzes.compact.each do |quiz| %>
-      <div class="col s4">
-        <div class="card blue-grey darken-1">
-          <div class="card-content white-text">
-            <h2 class="card-title"><%= quiz.name %></h2>
-            <p><%= quiz.introduction %></p>
-            <p><%= "Job: #{quiz.job_title}" %></p>
-            <p><%= "Time: #{quiz.time_limit}" %></p>
-          </div>
-          <div class="card-action">
-            <%= link_to 'Invite Candidates', '#', :class => 'invite_new_candidates', :data => {:toggle => "modal", :target => "#invite_candidates-form-container-#{quiz.id}"} %>
-            <%= link_to 'Candidates', quiz_quiz_candidates_path(quiz), :data => {:turbolinks => "false"} %>
-            <%= link_to 'Manage Quiz', edit_quiz_path(quiz), :data => {:turbolinks => "false"} %>
-          </div>
+      <div class="card blue-grey darken-1 quiz-card">
+        <div class="card-content white-text">
+          <h2 class="card-title"><%= quiz.name %></h2>
+          <p><%= quiz.introduction %></p>
+          <p><%= "Job: #{quiz.job_title}" %></p>
+          <p><%= "Time: #{quiz.time_limit}" %></p>
+        </div>
+
+        <div class="card-action">
+          <%= link_to 'Invite Candidates', '#', :class => 'invite_new_candidates', :data => {:toggle => "modal", :target => "#invite_candidates-form-container-#{quiz.id}"} %>
+          <%= link_to 'Candidates', quiz_quiz_candidates_path(quiz), :data => {:turbolinks => "false"} %>
+          <%= link_to 'Manage Quiz', edit_quiz_path(quiz), :data => {:turbolinks => "false"}, :style => "display: block;" %>
         </div>
       </div>
-        <div id="invite_candidates-form-container-<%= quiz.id%>" class="modal modal-fixed-footer">
-          <%= render 'invite', quiz: quiz %>
-        </div>
+
+      <div id="invite_candidates-form-container-<%= quiz.id%>" class="modal modal-fixed-footer">
+        <%= render 'invite', quiz: quiz %>
+      </div>
     <% end %>
   </div>
 <% end %>
-  
+
   <div class="fixed-action-btn horizontal">
     <%= link_to 'Create New Quiz', new_quiz_path, class: "btn waves-effect waves-light", :data => {:turbolinks => "false"}%>
   </div>
