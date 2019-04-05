@@ -116,6 +116,9 @@ class QuizCandidatesController < ApplicationController
       # unless @quiz_candidate.right_candidate?(current_user)
       #   raise CanCan::AccessDenied.new("You are not a Right user to access this Assessment!")
       # end
+      if @quiz_candidate.candidate_questions.blank?
+        raise CanCan::AccessDenied.new("Quiz is not generated yet!")
+      end
       if @quiz_candidate.completed?
         raise CanCan::AccessDenied.new("System says you already completed the Quiz!")
       end

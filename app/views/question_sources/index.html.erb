@@ -6,7 +6,7 @@
 
     <div class="form-group">
       <%= f.label :question_sheet %>
-      <%= f.file_field :question_sheet, class: 'form-control'%>
+      <%= f.file_field :question_sheet, class: 'form-control', required: true %>
     </div>
 
     <%= f.submit 'Upload', class: 'btn btn-primary' %>

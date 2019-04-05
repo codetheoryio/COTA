@@ -1,20 +1,20 @@
 <div class="row">
 <%= simple_form_for(@quiz, html: {class: 'col s12', multipart: true}) do |f| %>
     <%= f.error_notification %>
-    
+
     <ul class="collapsible popout" data-collapsible="accordion">
       <li>
         <div class="collapsible-header"><i class="large material-icons blue-grey-ic">info</i> Quiz Info</div>
         <div class="collapsible-body">
           <div class="row">
             <div class="input-field col s4">
-              <%= f.input :name, label: 'Name'%>
+              <%= f.input :name, label: 'Name', required: true %>
             </div>
             <div class="input-field col s4">
-              <%= f.input :job_title, label: 'Job Title'%>
+              <%= f.input :job_title, label: 'Job Title', required: true %>
             </div>
             <div class="input-field col s4">
-              <%= f.input :time_limit, label: 'Time Limit (in minutes)'%>
+              <%= f.input :time_limit, label: 'Time Limit (in minutes)', required: true %>
             </div>
           </div>
           <div class="row">
@@ -27,14 +27,14 @@
           </div>
         </div>
       </li>
-      
+
       <li>
         <div class="collapsible-header"><i class="large material-icons blue-grey-ic">list</i> Questions Set</div>
         <div class="collapsible-body" id='question_sets'>
           <%= f.simple_fields_for :question_sets do |qs| %>
             <%= render 'question_set_fields', :f => qs %>
           <% end %>
-          
+
           <div class="row">
             <%= link_to_add_association '<i class="large material-icons">add</i>'.html_safe, f, :question_sets,  :class => "btn-floating waves-effect waves-light green" %>
           </div>
